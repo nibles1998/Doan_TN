@@ -1,0 +1,1 @@
+const companyModel = require('../models/company');

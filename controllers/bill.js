@@ -1,0 +1,1 @@
+const billModel = require('../models/bill');

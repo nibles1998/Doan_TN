@@ -1,0 +1,1 @@
+const userCompanyModel = require('../models/userCompany');
