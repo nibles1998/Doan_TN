@@ -1,0 +1,19 @@
+{
+  "name": "doanthuctap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nibles1998/Doan_TN.git"
+  },
+  "author": "Nib",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nibles1998/Doan_TN/issues"
+  },
+  "homepage": "https://github.com/nibles1998/Doan_TN#readme"
+}
