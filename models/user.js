@@ -18,58 +18,58 @@ const attrs = {
     },
     fullName: {
         type: Sequelize.STRING,
-        // validate: {
-        //     isAlpha: true,
-        //     allowNull: false
-        // }
+        validate: {
+            isAlpha: true,
+            allowNull: false
+        }
     },
     address: {
         type: Sequelize.STRING,
-        // validate: {
-        //     allowNull: false
-        // }
+        validate: {
+            allowNull: false
+        }
     },
     phone: {
         type: Sequelize.STRING,
-        // validate: {
-        //     allowNull: false,
-        //     len: [10],
-        //     not: ["[a-zA-Z]"]
-        // }
+        validate: {
+            allowNull: false,
+            len: [10],
+            not: ["[a-zA-Z]"]
+        }
     },
     age: {
         type: Sequelize.INTEGER,
-        // validate: {
-        //     isInt: true,
-        //     allowNull: false
-        // }
+        validate: {
+            isInt: true,
+            allowNull: false
+        }
     },
     country: {
         type: Sequelize.STRING,
-        // validate: {
-        //     isAlpha: true,
-        //     allowNull: false
-        // }
+        validate: {
+            isAlpha: true,
+            allowNull: false
+        }
     },
     passport: {
         type: Sequelize.STRING,
-        // validate: {
-        //     allowNull: false
-        // }
+        validate: {
+            allowNull: false
+        }
     },
     displayName: {
         type: Sequelize.STRING,
-        // validate: {
-        //     isAlpha: true,
-        //     allowNull: false
-        // }
+        validate: {
+            isAlpha: true,
+            allowNull: false
+        }
     },
     type: {
         type: Sequelize.STRING,
-        // validate: {
-        //     isAlpha: true,
-        //     allowNull: false
-        // }
+        validate: {
+            isAlpha: true,
+            allowNull: false
+        }
     },
     paymentMethod: {
         type: Sequelize.STRING,
