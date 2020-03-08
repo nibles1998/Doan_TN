@@ -4,10 +4,10 @@ const userRoleCtrl = {};
 
 userRoleCtrl.getMany = async function (req, res, next) {
     try {
-        const user = await userRoleModel.findAll();
+        const userRole = await userRoleModel.findAll();
         res.status(200).json({
             success: true,
-            data: user
+            data: userRole
         })
     } catch (error) {
         res.status(400).json({
@@ -19,10 +19,10 @@ userRoleCtrl.getMany = async function (req, res, next) {
 
 userRoleCtrl.getById = async function (req, res, next) {
     try {
-        const user = await userRoleModel.findByPk(req.params.id);
+        const userRole = await userRoleModel.findByPk(req.params.id);
         res.status(200).json({
             success: true,
-            data: user
+            data: userRole
         });
     } catch (error) {
         res.status(400).json({
@@ -34,10 +34,10 @@ userRoleCtrl.getById = async function (req, res, next) {
 
 userRoleCtrl.createData = async function (req, res, next) {
     try {
-        const user = await userRoleModel.create(req.body);
+        const userRole = await userRoleModel.create(req.body);
         res.status(200).json({
             success: true,
-            data: user
+            data: userRole
         });
     } catch (error) {
         res.status(400).json({

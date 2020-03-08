@@ -4,10 +4,10 @@ const userCompanyCtrl = {};
 
 userCompanyCtrl.getMany = async function (req, res, next) {
     try {
-        const user = await userCompanyModel.findAll();
+        const userCompany = await userCompanyModel.findAll();
         res.status(200).json({
             success: true,
-            data: user
+            data: userCompany
         })
     } catch (error) {
         res.status(400).json({
@@ -19,10 +19,10 @@ userCompanyCtrl.getMany = async function (req, res, next) {
 
 userCompanyCtrl.getById = async function (req, res, next) {
     try {
-        const user = await userCompanyModel.findByPk(req.params.id);
+        const userCompany = await userCompanyModel.findByPk(req.params.id);
         res.status(200).json({
             success: true,
-            data: user
+            data: userCompany
         });
     } catch (error) {
         res.status(400).json({
@@ -34,10 +34,10 @@ userCompanyCtrl.getById = async function (req, res, next) {
 
 userCompanyCtrl.createData = async function (req, res, next) {
     try {
-        const user = await userCompanyModel.create(req.body);
+        const userCompany = await userCompanyModel.create(req.body);
         res.status(200).json({
             success: true,
-            data: user
+            data: userCompany
         });
     } catch (error) {
         res.status(400).json({

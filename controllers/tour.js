@@ -4,10 +4,10 @@ const tourCtrl = {};
 
 tourCtrl.getMany = async function (req, res, next) {
     try {
-        const user = await tourModel.findAll();
+        const tour = await tourModel.findAll();
         res.status(200).json({
             success: true,
-            data: user
+            data: tour
         })
     } catch (error) {
         res.status(400).json({
@@ -19,10 +19,10 @@ tourCtrl.getMany = async function (req, res, next) {
 
 tourCtrl.getById = async function (req, res, next) {
     try {
-        const user = await tourModel.findByPk(req.params.id);
+        const tour = await tourModel.findByPk(req.params.id);
         res.status(200).json({
             success: true,
-            data: user
+            data: tour
         });
     } catch (error) {
         res.status(400).json({
@@ -34,10 +34,10 @@ tourCtrl.getById = async function (req, res, next) {
 
 tourCtrl.createData = async function (req, res, next) {
     try {
-        const user = await tourModel.create(req.body);
+        const tour = await tourModel.create(req.body);
         res.status(200).json({
             success: true,
-            data: user
+            data: tour
         });
     } catch (error) {
         res.status(400).json({
@@ -50,7 +50,7 @@ tourCtrl.createData = async function (req, res, next) {
 tourCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        const user = await tourModel.update(req.body, {
+        const tour = await tourModel.update(req.body, {
             where: { id }
         });
         res.status(200).json({

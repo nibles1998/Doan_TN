@@ -4,10 +4,10 @@ const billCtrl = {};
 
 billCtrl.getMany = async function (req, res, next) {
     try {
-        const user = await billModel.findAll();
+        const bill = await billModel.findAll();
         res.status(200).json({
             success: true,
-            data: user
+            data: bill
         })
     } catch (error) {
         res.status(400).json({
@@ -19,10 +19,10 @@ billCtrl.getMany = async function (req, res, next) {
 
 billCtrl.getById = async function (req, res, next) {
     try {
-        const user = await billModel.findByPk(req.params.id);
+        const bill = await billModel.findByPk(req.params.id);
         res.status(200).json({
             success: true,
-            data: user
+            data: bill
         });
     } catch (error) {
         res.status(400).json({
@@ -34,10 +34,10 @@ billCtrl.getById = async function (req, res, next) {
 
 billCtrl.createData = async function (req, res, next) {
     try {
-        const user = await billModel.create(req.body);
+        const bill = await billModel.create(req.body);
         res.status(200).json({
             success: true,
-            data: user
+            data: bill
         });
     } catch (error) {
         res.status(400).json({
@@ -50,7 +50,7 @@ billCtrl.createData = async function (req, res, next) {
 billCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        const user = await billModel.update(req.body, {
+        const bill = await billModel.update(req.body, {
             where: { id }
         });
         res.status(200).json({
