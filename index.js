@@ -9,23 +9,26 @@ const isIgnore = function (path) {
 }
 
 const requireAll = async function (srcPath, app, obj) {
+
     let stat, curPath, rKey;
-    fs.readdirSync(srcPath).forEach( async (f) => {
+    const dirs = ['config', 'models', 'controllers', 'routes'];
+    for (let index = 0; index < dirs.length; index++) {
+        const f = dirs[index];
         if (f === "index.js") {
             return;
         }
         curPath = path.join(srcPath, f);
         stat = fs.lstatSync(curPath);
         if (stat.isDirectory() && !isIgnore(f)) {
-            const output = await require(curPath);
+            const output = await require(curPath).init();
             rKey = f[0].toUpperCase() + f.substr(1)
             if (typeof output === "function") {
-                obj[rKey] = output(app);
+                obj[rKey] = await output(app);
                 return;
             }
             obj[rKey] = output;
         }
-    })
+    };
 }
 
 const startServer = async function () {

@@ -19,4 +19,7 @@ const requireFile = function (srcPath, obj) {
     return obj;
 }
 
-module.exports = requireFile(__dirname, RootConfig);
+module.exports = {
+    config: RootConfig,
+    init: async () => await requireFile(__dirname, RootConfig)
+};
