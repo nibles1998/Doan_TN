@@ -20,7 +20,7 @@ const attrs = {
         type: Sequelize.UUID,
         validate: {
             isUUID: 4,
-            allowNull: false
+            notNull: false
         }
     },
     companyName: {
@@ -33,7 +33,7 @@ const attrs = {
     address: {
         type: Sequelize.STRING,
         validate: {
-            allowNull: false
+            notNull: false
         }
     },
     phone: {
@@ -41,7 +41,7 @@ const attrs = {
         validate: {
             notNull: false,
             len: [10],
-            not: ["[a-zA-Z"]
+            not: ["[a-zA-Z]"]
         }
     },
     fax: {
@@ -49,7 +49,7 @@ const attrs = {
         validate: {
             notNull: false,
             len: [10],
-            not: ["[a-zA-Z"]
+            not: ["[a-zA-Z]"]
         }
     }
 
