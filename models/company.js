@@ -26,7 +26,7 @@ const attrs = {
     companyName: {
         type: Sequelize.STRING,
         validate: {
-            allowNull: false,
+            notNull: false,
             isAlpha: true
         }
     },
@@ -39,7 +39,7 @@ const attrs = {
     phone: {
         type: Sequelize.STRING,
         validate: {
-            allowNull: false,
+            notNull: false,
             len: [10],
             not: ["[a-zA-Z"]
         }
@@ -47,7 +47,7 @@ const attrs = {
     fax: {
         type: Sequelize.STRING,
         validate: {
-            allowNull: false,
+            notNull: false,
             len: [10],
             not: ["[a-zA-Z"]
         }

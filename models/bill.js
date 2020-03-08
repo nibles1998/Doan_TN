@@ -20,21 +20,21 @@ const attrs = {
         type: Sequelize.UUID,
         validate: {
             isUUID: 4,
-            allowNull: false
+            notNull: false
         }
     },
     tourId: {
         type: Sequelize.UUID,
         validate: {
             isUUID: 4,
-            allowNull: false
+            notNull: false
         }
     },
     price: {
         type: Sequelize.DOUBLE,
         validate: {
             isFloat: true,
-            allowNull: false
+            notNull: false
         }
     },
     hasPaied: {
@@ -46,7 +46,7 @@ const attrs = {
     paiedDate: {
         type: Sequelize.DATE,
         validate: {
-            allowNull: false
+            notNull: false
         }
     },
     paymentMethod: {

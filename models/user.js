@@ -20,19 +20,19 @@ const attrs = {
         type: Sequelize.STRING,
         validate: {
             isAlpha: true,
-            allowNull: false
+            notNull: false
         }
     },
     address: {
         type: Sequelize.STRING,
         validate: {
-            allowNull: false
+            notNull: false
         }
     },
     phone: {
         type: Sequelize.STRING,
         validate: {
-            allowNull: false,
+            notNull: false,
             len: [10],
             not: ["[a-zA-Z]"]
         }
@@ -41,34 +41,34 @@ const attrs = {
         type: Sequelize.INTEGER,
         validate: {
             isInt: true,
-            allowNull: false
+            notNull: false
         }
     },
     country: {
         type: Sequelize.STRING,
         validate: {
             isAlpha: true,
-            allowNull: false
+            notNull: false
         }
     },
     passport: {
         type: Sequelize.STRING,
         validate: {
-            allowNull: false
+            notNull: false
         }
     },
     displayName: {
         type: Sequelize.STRING,
         validate: {
             isAlpha: true,
-            allowNull: false
+            notNull: false
         }
     },
     type: {
         type: Sequelize.STRING,
         validate: {
             isAlpha: true,
-            allowNull: false
+            notNull: false
         }
     },
     paymentMethod: {
