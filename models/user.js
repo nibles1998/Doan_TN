@@ -18,66 +18,77 @@ const attrs = {
     },
     fullName: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
             isAlpha: true,
-            notNull: false
+            notEmpty: true
         }
     },
     address: {
         type: Sequelize.STRING,
-        validate: {
-            notNull: false
+        allowNull: false,
+        validate:{
+            notEmpty: true
         }
     },
     phone: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notNull: false,
+            notEmpty: true,
             len: [10],
             not: ["[a-zA-Z]"]
         }
     },
     age: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         validate: {
-            isInt: true,
-            notNull: false
+            isInt: true
         }
     },
     country: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
             isAlpha: true,
-            notNull: false
+            notEmpty: true
         }
     },
     passport: {
         type: Sequelize.STRING,
-        validate: {
-            notNull: false
+        allowNull: false,
+        validate:{
+            notEmpty: true
         }
     },
     displayName: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
             isAlpha: true,
-            notNull: false
+            notEmpty: true
         }
     },
     type: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
             isAlpha: true,
-            notNull: false
+            notEmpty: true
         }
     },
     paymentMethod: {
         type: Sequelize.STRING,
-        get: function(){
+        allowNull: false,
+        validate:{
+            notEmpty: true
+        },
+        get: function () {
             return JSON.parse(this.getDataValue("paymentMethod"));
         },
-        set: function(val){
-            return this.setDataValue("paymentMethod",JSON.stringify(val));
+        set: function (val) {
+            return this.setDataValue("paymentMethod", JSON.stringify(val));
         }
     }
 }

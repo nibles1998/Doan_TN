@@ -4,7 +4,17 @@ const userCtrl = {};
 
 userCtrl.getMany = async function (req, res, next) {
     try {
-        const user = await userModel.findAll();
+        const query = req.query;
+        const whereQuery = {};
+        const allKeys = Object.keys(query);
+        for (let index = 0; index < allKeys.length; index++) {
+            const _queryKey = allKeys[index];
+            if (_queryKey == "name") {
+                whereQuery.fullName = query[_queryKey];
+                continue;
+            }
+        }
+        const user = await userModel.findAll({ where: whereQuery });
         res.status(200).json({
             success: true,
             data: user

@@ -18,47 +18,53 @@ const attrs = {
     },
     displayTourId: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notNull: false
+            notEmpty: true
         }
     },
     tourName: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notNull: false
+            notEmpty: true
         }
     },
     tourTime: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         validate: {
-            isInt: true,
-            notNull: false
+            isInt: true
         }
     },
     location: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
             isAlpha: true,
-            notNull: false
+            notEmpty: true
         }
     },
     price: {
         type: Sequelize.DOUBLE,
+        allowNull: false,
         validate: {
             isFloat: true,
-            notNull: false
+            notEmpty: true
         }
     },
     startedDate: {
         type: Sequelize.DATE,
+        allowNull: false,
         validate: {
-            notNull: false
+            notEmpty: true
         }
     },
     endDate: {
         type: Sequelize.DATE,
+        allowNull: false,
         validate: {
-            notNull: false
+            notEmpty: true
         }
     },
     note: {
@@ -66,9 +72,10 @@ const attrs = {
     },
     companyId: {
         type: Sequelize.UUID,
+        allowNull: false,
         validate: {
             isUUID: 4,
-            notNull: false
+            notEmpty: true
         }
     }
 

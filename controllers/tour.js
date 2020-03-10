@@ -4,11 +4,27 @@ const tourCtrl = {};
 
 tourCtrl.getMany = async function (req, res, next) {
     try {
-        const tour = await tourModel.findAll();
+        const query = req.query;
+        const whereQuery = {};
+        const allkeys = Object.keys(query);
+        for (let index = 0; index < allkeys.length; index++) {
+            const _queryKey = allkeys[index];
+            if (_queryKey == "time") {
+                whereQuery.tourTime = query[_queryKey] - 0;
+                continue;
+            }
+            if (_queryKey == "location") {
+                whereQuery.location = query[_queryKey];
+                continue;
+            }
+        }
+
+        const tour = await tourModel.findAll({ where: whereQuery });
         res.status(200).json({
             success: true,
             data: tour
-        })
+        });
+
     } catch (error) {
         res.status(400).json({
             success: false,

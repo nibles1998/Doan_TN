@@ -12,22 +12,21 @@ const attrs = {
         primaryKey: true,
         type: Sequelize.UUID,
         validate: {
-            isUUID: 4,
-            notNull: false
+            isUUID: 4
         }
     },
     companyId: {
         primaryKey: true,
         type: Sequelize.UUID,
         validate: {
-            isUUID: 4,
-            notNull: false
+            isUUID: 4
         }
     },
     status: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notNull: false,
+            notEmpty: true,
             isAlpha: true
         }
     },
@@ -39,9 +38,10 @@ const attrs = {
     },
     roleId: {
         type: Sequelize.UUID,
+        allowNull: false,
         validate: {
             isUUID: 4,
-            notNull: false
+            notEmpty: true
         }
     }
 

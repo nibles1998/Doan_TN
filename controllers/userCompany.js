@@ -19,7 +19,13 @@ userCompanyCtrl.getMany = async function (req, res, next) {
 
 userCompanyCtrl.getById = async function (req, res, next) {
     try {
-        const userCompany = await userCompanyModel.findByPk(req.params.id);
+        let [userId, companyId] = (req.params.id).split("&");
+        const userCompany = await userCompanyModel.findAll({
+            where: {
+                userId,
+                companyId
+            }
+        });
         res.status(200).json({
             success: true,
             data: userCompany
@@ -49,9 +55,12 @@ userCompanyCtrl.createData = async function (req, res, next) {
 
 userCompanyCtrl.updateById = async function (req, res, next) {
     try {
-        const { id } = req.params;
-        const user = await userCompanyModel.update(req.body, {
-            where: { id }
+        let [userId, companyId] = (req.params.id).split("&");
+        await userCompanyModel.update(req.body, {
+            where: {
+                userId,
+                companyId
+            }
         });
         res.status(200).json({
             success: true,
@@ -67,8 +76,12 @@ userCompanyCtrl.updateById = async function (req, res, next) {
 
 userCompanyCtrl.deleteById = async function (req, res, next) {
     try {
-        const { id } = req.params;
-        await userCompanyModel.destroy({ where: { id } });
+        let [userId,companyId] = (req.params.id).split("&");
+        await userCompanyModel.destroy({
+            where:{
+                userId,
+                companyId
+        }});
         res.status(200).json({
             success: true,
             message: "Delete successfully!"

@@ -18,36 +18,41 @@ const attrs = {
     },
     ownerId: {
         type: Sequelize.UUID,
+        allowNull: false,
         validate: {
             isUUID: 4,
-            notNull: false
+            notEmpty: true
         }
     },
     companyName: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notNull: false,
-            isAlpha: true
+            isAlpha: true,
+            notEmpty: true
         }
     },
     address: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notNull: false
+            notEmpty: true
         }
     },
     phone: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notNull: false,
+            notEmpty: true,
             len: [10],
             not: ["[a-zA-Z]"]
         }
     },
     fax: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notNull: false,
+            notEmpty: true,
             len: [10],
             not: ["[a-zA-Z]"]
         }
