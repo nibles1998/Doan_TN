@@ -1,5 +1,5 @@
 const AppConfig = {
-    PORT: 8080,
+    PORT: 4444,
 };
 
 module.exports = AppConfig;

@@ -45,7 +45,7 @@ const startServer = async function () {
         const PORT = rootConfig.App.PORT || 3000;
 
         server.listen(PORT, () => {
-            console.log('\x1b[36m%s\x1b[0m', `Server is running on port ${PORT}`)
+            console.log('\x1b[36m%s\x1b[0m', `Server is running on port ${PORT}`);
         });
 
     } catch (error) {
