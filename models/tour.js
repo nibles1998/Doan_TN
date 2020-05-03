@@ -30,11 +30,36 @@ const attrs = {
             notEmpty: true
         }
     },
-    tourTime: {
+    seat: {
         type: Sequelize.INTEGER,
         allowNull: false,
         validate: {
-            isInt: true
+            isInt: true,
+            notEmpty: true
+        }
+    },
+    emptySeat: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            isInt: true,
+            notEmpty: true
+        }
+    },
+    child: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            isInt: true,
+            notEmpty: true
+        }
+    },
+    adult: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            isInt: true,
+            notEmpty: true
         }
     },
     location: {
@@ -78,7 +103,6 @@ const attrs = {
             notEmpty: true
         }
     }
-
 }
 
 const options = {}
