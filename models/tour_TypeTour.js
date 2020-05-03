@@ -10,6 +10,14 @@ class Tour_TypeTour extends Model {
 };
 
 const attrs = {
+    id: {
+        primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        validate: {
+            isUUID: 4
+        }
+    },
     tourId: {
         type: Sequelize.UUID,
         allowNull: false,
