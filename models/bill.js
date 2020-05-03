@@ -30,7 +30,30 @@ const attrs = {
             isUUID: 4
         }
     },
+    child: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            isInt: true,
+            notEmpty: true
+        }
+    },
+    adult: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            isInt: true,
+            notEmpty: true
+        }
+    },
     price: {
+        type: Sequelize.DOUBLE,
+        allowNull: false,
+        validate: {
+            isFloat: true
+        }
+    },
+    total: {
         type: Sequelize.DOUBLE,
         allowNull: false,
         validate: {

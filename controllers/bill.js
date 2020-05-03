@@ -34,6 +34,8 @@ billCtrl.getById = async function (req, res, next) {
 
 billCtrl.createData = async function (req, res, next) {
     try {
+        const total = (req.body.child * 0.8 * req.body.price) + (req.body.adult * req.body.price);
+        req.body.total = total;
         const bill = await billModel.create(req.body);
         res.status(200).json({
             success: true,
@@ -50,6 +52,8 @@ billCtrl.createData = async function (req, res, next) {
 billCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
+        const total = (req.body.child * 0.8 * req.body.price) + (req.body.adult * req.body.price);
+        req.body.total = total;
         const bill = await billModel.update(req.body, {
             where: { id }
         });
