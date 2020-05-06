@@ -1,6 +1,7 @@
 const tourModel = require('../models').model.Tour;
 const TYPETOUR = require('../models/typeTour');
-
+const moment = require('moment');
+const Sequelize = require('sequelize')
 const tourCtrl = {};
 
 tourCtrl.getMany = async function (req, res, next) {
@@ -9,41 +10,40 @@ tourCtrl.getMany = async function (req, res, next) {
         const whereQuery = {};
         const sortQuery = [];
         const allkeys = Object.keys(query);
+
+        // 
         for (let index = 0; index < allkeys.length; index++) {
             const _queryKey = allkeys[index];
             if (_queryKey == "begin") {
-                whereQuery.startedDate = query[_queryKey] - 0;
+                let date = query[_queryKey];
+                const startDate = moment(date).format('YYYY-MM-DD');
+                const endDate = moment(date).endOf('month').format('YYYY-MM-DD');
+                whereQuery.startedDate =
+                {
+                    [Sequelize.Op.gte]: startDate,
+                    [Sequelize.Op.lte]: endDate
+                };
                 continue;
             }
             if (_queryKey == "location") {
                 whereQuery.location = query[_queryKey];
                 continue;
             }
-            if (_queryKey == "sortnamedesc") {
+            if (_queryKey == "sortname") {
                 if (query[_queryKey])
-                    sortQuery.push(["tourName", "DESC"]);
+                    sortQuery.push(["tourName", query[_queryKey]]);
                 continue;
             }
-            if (_queryKey == "sortnameasc") {
+            if (_queryKey == "sortprice") {
                 if (query[_queryKey])
-                    sortQuery.push(["tourName", "ASC"]);
-                continue;
-            }
-            if (_queryKey == "sortpricedesc") {
-                if (query[_queryKey])
-                    sortQuery.push(["price", "DESC"]);
-                continue;
-            }
-            if (_queryKey == "sortpriceasc") {
-                if (query[_queryKey])
-                    sortQuery.push(["price", "ASC"]);
+                    sortQuery.push(["price", query[_queryKey]]);
                 continue;
             }
         }
 
         const tour = await tourModel.findAll({
             where: whereQuery,
-            oder: sortQuery,
+            order: sortQuery,
             include: {
                 model: TYPETOUR.model,
                 as: "typeTours"
