@@ -1,15 +1,16 @@
 const Sequenlize = require('sequelize');
+const dbInfo = require('../config/app').DATABASE;
 
 const connectDB = async function () {
-    const instanceDB = new Sequenlize('demonode', 'postgres', 'nibles1504', {
-        host: 'localhost',
-        port: 5432,
-        dialect: 'postgres',
+    const instanceDB = new Sequenlize(dbInfo.DATABASENAME, dbInfo.USERNAME, dbInfo.PASSWORD, {
+        host: dbInfo.HOST,
+        port: dbInfo.PORT,
+        dialect: dbInfo.DIALECT,
         logging: false
     })
     await instanceDB.authenticate()
         .then(() => {
-            console.log("Connected DB");
+            console.log("Database already!");
         })
         .catch((e) => {
             throw e
