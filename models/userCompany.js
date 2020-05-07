@@ -17,16 +17,16 @@ const attrs = {
         }
     },
     userId: {
-        primaryKey: true,
         type: Sequelize.UUID,
+        allowNull: false,
         validate: {
             isUUID: 4,
             notEmpty: true
         }
     },
     companyId: {
-        primaryKey: true,
         type: Sequelize.UUID,
+        allowNull: false,
         validate: {
             isUUID: 4,
             notEmpty: true
