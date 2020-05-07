@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const Model = Sequelize.Model
 
-class UserCompany extends Model {
+class Review extends Model {
     constructor(...args) {
         super(...args)
     }
@@ -17,52 +17,44 @@ const attrs = {
         }
     },
     userId: {
-        primaryKey: true,
         type: Sequelize.UUID,
+        allowNull: false,
         validate: {
             isUUID: 4,
             notEmpty: true
         }
     },
-    companyId: {
-        primaryKey: true,
+    tourId: {
         type: Sequelize.UUID,
+        allowNull: false,
         validate: {
             isUUID: 4,
             notEmpty: true
         }
     },
-    status: {
+    comment: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true,
-            isAlpha: true
+            notEmpty: true
         }
     },
-    hasAdmin: {
-        type: Sequelize.BOOLEAN
-    },
-    hasAgent: {
-        type: Sequelize.BOOLEAN
-    },
-    roleId: {
-        type: Sequelize.UUID,
+    rating: {
+        type: Sequelize.FLOAT,
         allowNull: false,
         validate: {
-            isUUID: 4,
+            isFloat: true,
             notEmpty: true
         }
     }
-
 }
 
 const options = {}
 
 module.exports = {
     init: async (instanceDB) => {
-        UserCompany.init(attrs, { ...options, sequelize: instanceDB });
-        await UserCompany.sync();
+        Review.init(attrs, { ...options, sequelize: instanceDB });
+        await Review.sync();
     },
-    model: UserCompany
+    model: Review
 }

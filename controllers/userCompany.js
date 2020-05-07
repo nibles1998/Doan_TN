@@ -40,10 +40,10 @@ userCompanyCtrl.getById = async function (req, res, next) {
 
 userCompanyCtrl.createData = async function (req, res, next) {
     try {
-        const userCompany = await userCompanyModel.create(req.body);
+        await userCompanyModel.create(req.body);
         res.status(200).json({
             success: true,
-            data: userCompany
+            message: "Create UserCompany successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -64,7 +64,7 @@ userCompanyCtrl.updateById = async function (req, res, next) {
         });
         res.status(200).json({
             success: true,
-            message: "Update successfully!"
+            message: "Update UserCompany successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -76,15 +76,16 @@ userCompanyCtrl.updateById = async function (req, res, next) {
 
 userCompanyCtrl.deleteById = async function (req, res, next) {
     try {
-        let [userId,companyId] = (req.params.id).split("&");
+        let [userId, companyId] = (req.params.id).split("&");
         await userCompanyModel.destroy({
-            where:{
+            where: {
                 userId,
                 companyId
-        }});
+            }
+        });
         res.status(200).json({
             success: true,
-            message: "Delete successfully!"
+            message: "Delete UserCompany successfully!"
         });
     } catch (error) {
         res.status(400).json({

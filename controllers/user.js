@@ -44,10 +44,10 @@ userCtrl.getById = async function (req, res, next) {
 
 userCtrl.createData = async function (req, res, next) {
     try {
-        const user = await userModel.create(req.body);
+        await userModel.create(req.body);
         res.status(200).json({
             success: true,
-            data: user
+            message: "Create User successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -60,12 +60,12 @@ userCtrl.createData = async function (req, res, next) {
 userCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        const user = await userModel.update(req.body, {
+        await userModel.update(req.body, {
             where: { id }
         });
         res.status(200).json({
             success: true,
-            message: "Update successfully!"
+            message: "Update User successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -81,7 +81,7 @@ userCtrl.deleteById = async function (req, res, next) {
         await userModel.destroy({ where: { id } });
         res.status(200).json({
             success: true,
-            message: "Delete successfully!"
+            message: "Delete User successfully!"
         });
     } catch (error) {
         res.status(400).json({

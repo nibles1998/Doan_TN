@@ -1,13 +1,13 @@
-const userRoleModel = require('../models').model.UserRole;
+const reviewModel = require('../models').model.Review;
 
-const userRoleCtrl = {};
+const reviewCtrl = {};
 
-userRoleCtrl.getMany = async function (req, res, next) {
+reviewCtrl.getMany = async function (req, res, next) {
     try {
-        const userRole = await userRoleModel.findAll();
+        const review = await reviewModel.findAll();
         res.status(200).json({
             success: true,
-            data: userRole
+            data: review
         })
     } catch (error) {
         res.status(400).json({
@@ -17,12 +17,12 @@ userRoleCtrl.getMany = async function (req, res, next) {
     }
 };
 
-userRoleCtrl.getById = async function (req, res, next) {
+reviewCtrl.getById = async function (req, res, next) {
     try {
-        const userRole = await userRoleModel.findByPk(req.params.id);
+        const review = await reviewModel.findByPk(req.params.id);
         res.status(200).json({
             success: true,
-            data: userRole
+            data: review
         });
     } catch (error) {
         res.status(400).json({
@@ -32,12 +32,12 @@ userRoleCtrl.getById = async function (req, res, next) {
     }
 };
 
-userRoleCtrl.createData = async function (req, res, next) {
+reviewCtrl.createData = async function (req, res, next) {
     try {
-        await userRoleModel.create(req.body);
+        await reviewModel.create(req.body);
         res.status(200).json({
             success: true,
-            message: "Create UserRole successfully!"
+            message: "Create Review successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -47,15 +47,15 @@ userRoleCtrl.createData = async function (req, res, next) {
     }
 };
 
-userRoleCtrl.updateById = async function (req, res, next) {
+reviewCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        await userRoleModel.update(req.body, {
+        await reviewModel.update(req.body, {
             where: { id }
         });
         res.status(200).json({
             success: true,
-            message: "Update UserRole successfully!"
+            message: "Update Review successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -65,13 +65,13 @@ userRoleCtrl.updateById = async function (req, res, next) {
     }
 };
 
-userRoleCtrl.deleteById = async function (req, res, next) {
+reviewCtrl.deleteById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        await userRoleModel.destroy({ where: { id } });
+        await reviewModel.destroy({ where: { id } });
         res.status(200).json({
             success: true,
-            message: "Delete UserRole successfully!"
+            message: "Delete Review successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -81,4 +81,4 @@ userRoleCtrl.deleteById = async function (req, res, next) {
     }
 };
 
-module.exports = userRoleCtrl;
+module.exports = reviewCtrl;

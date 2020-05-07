@@ -36,10 +36,10 @@ billCtrl.createData = async function (req, res, next) {
     try {
         const total = (req.body.child * 0.8 * req.body.price) + (req.body.adult * req.body.price);
         req.body.total = total;
-        const bill = await billModel.create(req.body);
+        await billModel.create(req.body);
         res.status(200).json({
             success: true,
-            data: bill
+            message: "Create Bill successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -54,12 +54,12 @@ billCtrl.updateById = async function (req, res, next) {
         const { id } = req.params;
         const total = (req.body.child * 0.8 * req.body.price) + (req.body.adult * req.body.price);
         req.body.total = total;
-        const bill = await billModel.update(req.body, {
+        await billModel.update(req.body, {
             where: { id }
         });
         res.status(200).json({
             success: true,
-            message: "Update successfully!"
+            message: "Update Bill successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -75,7 +75,7 @@ billCtrl.deleteById = async function (req, res, next) {
         await billModel.destroy({ where: { id } });
         res.status(200).json({
             success: true,
-            message: "Delete successfully!"
+            message: "Delete Bill successfully!"
         });
     } catch (error) {
         res.status(400).json({

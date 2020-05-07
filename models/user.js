@@ -27,7 +27,7 @@ const attrs = {
     address: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
+        validate: {
             notEmpty: true
         }
     },
@@ -40,11 +40,11 @@ const attrs = {
             not: ["[a-zA-Z]"]
         }
     },
-    age: {
-        type: Sequelize.INTEGER,
+    dateOfBirth: {
+        type: Sequelize.DATE,
         allowNull: false,
         validate: {
-            isInt: true
+            notEmpty: true
         }
     },
     country: {
@@ -55,10 +55,10 @@ const attrs = {
             notEmpty: true
         }
     },
-    passport: {
+    description: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
+        validate: {
             notEmpty: true
         }
     },
@@ -81,7 +81,7 @@ const attrs = {
     paymentMethod: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate:{
+        validate: {
             notEmpty: true
         },
         get: function () {

@@ -20,14 +20,16 @@ const attrs = {
         type: Sequelize.UUID,
         allowNull: false,
         validate: {
-            isUUID: 4
+            isUUID: 4,
+            notEmpty: true
         }
     },
     tourId: {
         type: Sequelize.UUID,
         allowNull: false,
         validate: {
-            isUUID: 4
+            isUUID: 4,
+            notEmpty: true
         }
     },
     child: {
@@ -50,14 +52,16 @@ const attrs = {
         type: Sequelize.DOUBLE,
         allowNull: false,
         validate: {
-            isFloat: true
+            isFloat: true,
+            notEmpty: true
         }
     },
     total: {
         type: Sequelize.DOUBLE,
         allowNull: false,
         validate: {
-            isFloat: true
+            isFloat: true,
+            notEmpty: true
         }
     },
     hasPaied: {

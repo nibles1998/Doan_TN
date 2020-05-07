@@ -22,14 +22,16 @@ const attrs = {
         type: Sequelize.UUID,
         allowNull: false,
         validate: {
-            isUUID: 4
+            isUUID: 4,
+            notEmpty: true
         }
     },
     typeTourId: {
         type: Sequelize.UUID,
         allowNull: false,
         validate: {
-            isUUID: 4
+            isUUID: 4,
+            notEmpty: true
         }
     }
 }

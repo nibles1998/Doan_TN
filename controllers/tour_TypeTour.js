@@ -38,7 +38,7 @@ tour_TypeTourCtrl.createData = async function (req, res, next) {
         await tour_TypeTourModel.create(req.body);
         res.status(200).json({
             success: true,
-            message: "Create successfully!"
+            message: "Create Tour_TypeTour successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -56,7 +56,7 @@ tour_TypeTourCtrl.updateById = async function (req, res, next) {
         });
         res.status(200).json({
             success: true,
-            message: "Update successfully!"
+            message: "Update Tour_TypeTour successfully!"
         });
     } catch (error) {
         res.status(400).json({
@@ -72,7 +72,7 @@ tour_TypeTourCtrl.deleteById = async function (req, res, next) {
         await tour_TypeTourModel.destroy({ where: { id } });
         res.status(200).json({
             success: true,
-            message: "Delete successfully!"
+            message: "Delete Tour_TypeTour successfully!"
         });
     } catch (error) {
         res.status(400).json({
