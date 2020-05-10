@@ -24,6 +24,21 @@ const attrs = {
             notEmpty: true
         }
     },
+    email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+            isEmail: true
+        }
+    },
+    password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     address: {
         type: Sequelize.STRING,
         allowNull: false,
