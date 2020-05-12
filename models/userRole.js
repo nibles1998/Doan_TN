@@ -16,16 +16,24 @@ const attrs = {
             isUUID: 4
         }
     },
-    create:{
+    type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            isAlpha: true,
+            notEmpty: true
+        }
+    },
+    create: {
         type: Sequelize.BOOLEAN
     },
-    read:{
+    read: {
         type: Sequelize.BOOLEAN
     },
-    update:{
+    update: {
         type: Sequelize.BOOLEAN
     },
-    delete:{
+    delete: {
         type: Sequelize.BOOLEAN
     }
 

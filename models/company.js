@@ -16,14 +16,6 @@ const attrs = {
             isUUID: 4
         }
     },
-    ownerId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        validate: {
-            isUUID: 4,
-            notEmpty: true
-        }
-    },
     companyName: {
         type: Sequelize.STRING,
         allowNull: false,

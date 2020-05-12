@@ -16,7 +16,7 @@ const attrs = {
             isUUID: 4
         }
     },
-    displayTourId: {
+    tourCode: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {

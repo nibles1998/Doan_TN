@@ -77,6 +77,13 @@ const attrs = {
             notEmpty: true
         }
     },
+    applyDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     paymentMethod: {
         type: Sequelize.STRING,
         allowNull: false,

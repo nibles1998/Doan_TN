@@ -85,11 +85,11 @@ const attrs = {
             notEmpty: true
         }
     },
-    type: {
-        type: Sequelize.STRING,
+    roleId: {
+        type: Sequelize.UUID,
         allowNull: false,
         validate: {
-            isAlpha: true,
+            isUUID: 4,
             notEmpty: true
         }
     },
