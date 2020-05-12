@@ -54,7 +54,6 @@ userCtrl.createData = async function (req, res, next) {
     try {
         let { password } = req.body;
         const hash = bcrypt.hashSync(password, salt);
-        console.log(`Auto-gen Pass: ${hash}`);
         req.body.password = hash;
         await userModel.create(req.body);
         res.status(200).json({
@@ -121,11 +120,13 @@ userCtrl.getToken = async function (req, res, next) {
 
         if (isMatched) {
             const token = jwt.sign({
-                id: user.id
+                id: user.id,
+                role: user.roleId
             }, JWT_KEY);
             res.status(200).json({
                 success: true,
                 userId: user.id,
+                roleId: user.roleId,
                 token
             });
             next();
