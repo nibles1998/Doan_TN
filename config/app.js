@@ -7,7 +7,8 @@ const AppConfig = {
         HOST: 'localhost',
         PORT: 5432,
         DIALECT: 'postgres',
-    }
+    },
+    JWT_KEY: "myKey"
 };
 
 module.exports = AppConfig;
