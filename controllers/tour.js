@@ -49,13 +49,13 @@ tourCtrl.getMany = async function (req, res, next) {
                 as: "typeTours"
             }
         });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: tour
         });
 
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -65,12 +65,12 @@ tourCtrl.getMany = async function (req, res, next) {
 tourCtrl.getById = async function (req, res, next) {
     try {
         const tour = await tourModel.findByPk(req.params.id);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: tour
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -79,13 +79,33 @@ tourCtrl.getById = async function (req, res, next) {
 
 tourCtrl.createData = async function (req, res, next) {
     try {
+        const { tourCode, seat, emptySeat, startedDate, endDate } = req.body;
+        const tour = await tourModel.findOne({ where: { tourCode } });
+        if (tour) {
+            return res.status(400).json({
+                success: false,
+                message: "TourCode is exist!"
+            });
+        }
+        if (seat !== emptySeat) {
+            return res.status(400).json({
+                success: false,
+                message: "Seat not equal emptySeat!"
+            });
+        }
+        if (endDate < startedDate) {
+            return res.status(400).json({
+                success: false,
+                message: "endDate is smaller than startedDate!"
+            });
+        }
         await tourModel.create(req.body);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Create Tour successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -95,17 +115,66 @@ tourCtrl.createData = async function (req, res, next) {
 tourCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        if ((req.body.child + req.body.adult) > req.body.emptySeat)
-            throw error;
+        const { tourCode, seat, emptySeat, startedDate, endDate, child, adult } = req.body;
+        const tour = await tourModel.findByPk(id);
+        if (tourCode) {
+            const code = await tourModel.findOne({ where: { tourCode } });
+            if (code) {
+                return res.status(400).json({
+                    success: false,
+                    message: "TourCode is exist!"
+                });
+            }
+        }
+
+        if (seat) {
+            if (seat < (tour.child + tour.adult + tour.emptySeat)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Wrong number of seats!"
+                });
+            }
+        }
+
+        if (child && adult && emptySeat) {
+            if ((child + adult) > emptySeat) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Not enough emptySeat!"
+                });
+            }
+        }
+
+        if (endDate || startedDate) {
+            if (endDate) {
+                if (endDate < tour.startedDate) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "endDate input is smaller than startedDate!"
+                    });
+                }
+            }
+
+            if (startedDate) {
+                if (tour.endDate < startedDate) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "endDate is smaller than startedDate input!"
+                    });
+                }
+            }
+
+        }
+
         await tourModel.update(req.body, {
             where: { id }
         });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Update Tour successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -116,12 +185,12 @@ tourCtrl.deleteById = async function (req, res, next) {
     try {
         const { id } = req.params;
         await tourModel.destroy({ where: { id } });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Delete Tour successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
