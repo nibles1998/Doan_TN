@@ -1,10 +1,59 @@
 const billModel = require('../models').model.Bill;
+const moment = require('moment');
+const Sequelize = require('sequelize');
 
 const billCtrl = {};
 
 billCtrl.getMany = async function (req, res, next) {
     try {
-        const bill = await billModel.findAll();
+        const query = req.query;
+        const whereQuery = {};
+        const sortQuery = [];
+        const allKeys = Object.keys(query);
+        for (let index = 0; index < allKeys.length; index++) {
+            const _queryKey = allKeys[index];
+            if (_queryKey == "sortprice") {
+                if (query[_queryKey])
+                    sortQuery.push(["price", query[_queryKey]]);
+                continue;
+            }
+            if (_queryKey == "sorttotal") {
+                if (query[_queryKey])
+                    sortQuery.push(["total", query[_queryKey]]);
+                continue;
+            }
+            if (_queryKey == "paied") {
+                whereQuery.hasPaied = query[_queryKey];
+                continue;
+            }
+            if (_queryKey == "cancel") {
+                whereQuery.hasCancel = query[_queryKey];
+                continue;
+            }
+            if (_queryKey == "paieddate") {
+                const startDate = moment(query[_queryKey]).utc().startOf('day');
+                const endDate = moment(query[_queryKey]).utc().endOf('day');
+                whereQuery.paiedDate = {
+                    [Sequelize.Op.gte]: startDate,
+                    [Sequelize.Op.lte]: endDate
+                }
+                continue;
+            }
+            if (_queryKey == "apply") {
+                const startDate = moment(query[_queryKey]).utc().startOf('day');
+                const endDate = moment(query[_queryKey]).utc().endOf('day');
+                whereQuery.applyDate = {
+                    [Sequelize.Op.gte]: startDate,
+                    [Sequelize.Op.lte]: endDate
+                }
+                continue;
+            }
+        }
+
+        const bill = await billModel.findAll({
+            where: whereQuery,
+            order: sortQuery
+        });
         res.status(200).json({
             success: true,
             data: bill
@@ -34,7 +83,10 @@ billCtrl.getById = async function (req, res, next) {
 
 billCtrl.createData = async function (req, res, next) {
     try {
-        const total = (req.body.child * 0.8 * req.body.price) + (req.body.adult * req.body.price);
+        const child = req.body.child;
+        const adult = req.body.adult;
+        const price = req.body.price
+        const total = (child * 0.8 * price) + (adult * price);
         req.body.total = total;
         await billModel.create(req.body);
         res.status(200).json({
@@ -52,7 +104,10 @@ billCtrl.createData = async function (req, res, next) {
 billCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        const total = (req.body.child * 0.8 * req.body.price) + (req.body.adult * req.body.price);
+        const child = req.body.child;
+        const adult = req.body.adult;
+        const price = req.body.price
+        const total = (child * 0.8 * price) + (adult * price);
         req.body.total = total;
         await billModel.update(req.body, {
             where: { id }

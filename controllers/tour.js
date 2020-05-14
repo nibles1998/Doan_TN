@@ -1,7 +1,7 @@
 const tourModel = require('../models').model.Tour;
 const TYPETOUR = require('../models/typeTour');
 const moment = require('moment');
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize');
 const tourCtrl = {};
 
 tourCtrl.getMany = async function (req, res, next) {
