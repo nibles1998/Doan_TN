@@ -35,6 +35,14 @@ typeTourCtrl.getById = async function (req, res, next) {
 
 typeTourCtrl.createData = async function (req, res, next) {
     try {
+        const { type } = req.body;
+        const typeTour = await typeTourModel.findOne({ where: { type } });
+        if (typeTour) {
+            return res.status(400).json({
+                success: false,
+                message: "Type is exist!"
+            });
+        }
         await typeTourModel.create(req.body);
         res.status(200).json({
             success: true,
@@ -50,6 +58,14 @@ typeTourCtrl.createData = async function (req, res, next) {
 
 typeTourCtrl.updateById = async function (req, res, next) {
     try {
+        const { type } = req.body;
+        const typeTour = await typeTourModel.findOne({ where: { type } });
+        if (typeTour) {
+            return res.status(400).json({
+                success: false,
+                message: "Type is exist!"
+            });
+        }
         const { id } = req.params;
         await typeTourModel.update(req.body, {
             where: { id }
