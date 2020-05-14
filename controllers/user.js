@@ -76,6 +76,11 @@ userCtrl.createData = async function (req, res, next) {
 userCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
+        const { password } = req.body;
+        if (password) {
+            const hash = bcrypt.hashSync(password, salt);
+            req.body.password = hash;
+        }
         await userModel.update(req.body, {
             where: { id }
         });
