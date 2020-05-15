@@ -88,6 +88,16 @@ billCtrl.createData = async function (req, res, next) {
         const price = req.body.price
         const total = (child * 0.8 * price) + (adult * price);
         req.body.total = total;
+
+        if (req.body.hasPaied === true) {
+            const now = moment().toNow();
+            req.body.paiedDate = now;
+        } else {
+            req.body.paiedDate = null;
+        }
+
+        req.body.hasCancel = false;
+
         await billModel.create(req.body);
         res.status(200).json({
             success: true,
@@ -109,6 +119,23 @@ billCtrl.updateById = async function (req, res, next) {
         const price = req.body.price
         const total = (child * 0.8 * price) + (adult * price);
         req.body.total = total;
+
+        if (req.body.hasPaied === true) {
+            const now = moment().toNow();
+            req.body.paiedDate = now;
+            const bill = billModel.findByPk(id);
+            if (bill.applyDate < now) {
+                return res.status(400).json({
+                    success: false,
+                    message: "You haven't paid me yet!"
+                });
+            }
+        }
+
+        if (req.body.hasCancel === true) {
+            req.body.total = total * 0.6;
+        }
+
         await billModel.update(req.body, {
             where: { id }
         });
