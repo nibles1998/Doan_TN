@@ -30,10 +30,10 @@ const attrs = {
     read: {
         type: Sequelize.BOOLEAN
     },
-    update: {
+    up: {
         type: Sequelize.BOOLEAN
     },
-    delete: {
+    del: {
         type: Sequelize.BOOLEAN
     }
 

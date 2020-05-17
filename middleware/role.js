@@ -46,12 +46,11 @@ role.checkRoleQuery = function (queries, roleType, roleOption) {
             for (let item of queries) {
                 if (query[item]) {
                     await authenticate.authenticateJWT(req, res, next);
-                    console.log("res.headersSent: ", res.headersSent);
-                    
+
                     if (res.headersSent === true) {
-                        console.log("Run 1");
                         return next(false)
                     };
+
                     await role.checkRole(roleType, roleOption)(req, res, next);
                 }
             }

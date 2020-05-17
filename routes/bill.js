@@ -6,7 +6,7 @@ const role = require('../middleware/role');
 billRoute.get('/s', authenticate.authenticateJWT, role.checkRole(["Admin", "Customer"], { read: true }), billCtrl.getMany);
 billRoute.get('/:id', authenticate.authenticateJWT, role.checkRole(["Admin"], { read: true }), billCtrl.getById);
 billRoute.post('/', authenticate.authenticateJWT, role.checkRole(["Admin"], { create: true }), billCtrl.createData);
-billRoute.put('/:id', authenticate.authenticateJWT, role.checkRole(["Admin"], { update: true }), billCtrl.updateById);
+billRoute.put('/:id', authenticate.authenticateJWT, role.checkRole(["Admin"], { up: true }), billCtrl.updateById);
 // billRoute.delete('/:id', billCtrl.deleteById);
 
 module.exports = billRoute;
