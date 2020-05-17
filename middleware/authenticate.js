@@ -48,34 +48,42 @@ JWT_Authenticate.getToken = async function (req, res, next) {
     }
 };
 
-JWT_Authenticate.authenticateJWT = async function (req, res, next) {
-    try {
-        const authHeader = req.headers.authorization;
-        console.log(authHeader);
-        if (authHeader) {
-            const token = authHeader.split(' ')[1];
-            await jwt.verify(token, JWT_KEY, async (err, user) => {
-                if (err) {
-                    return res.status(403).json({
-                        success: false,
-                        message: "Bạn không có quyền truy cập!"
-                    });
-                }
+JWT_Authenticate.authenticateJWT = function (req, res, next) {
+    return new Promise(() => {
+        try {
+            const authHeader = req.headers.authorization;
 
-                const userInfo = await userModel.findByPk(user.id);
-                const userRoleInfo = await userRoleModel.findByPk(user.role);
-                req.user = userInfo;
-                req.role = userRoleInfo;
-                next();
+            if (authHeader) {
+                const token = authHeader.split(' ')[1];
+                jwt.verify(token, JWT_KEY, async (err, user) => {
+                    if (err) {
+                        return res.status(403).json({
+                            success: false,
+                            message: "Bạn không có quyền truy cập!"
+                        });
+                    }
+
+                    const userInfo = await userModel.findByPk(user.id);
+                    const userRoleInfo = await userRoleModel.findByPk(user.role);
+                    req.user = userInfo;
+                    req.role = userRoleInfo;
+                    next();
+                });
+            } else {
+                return res.status(403).json({
+                    success: false,
+                    message: "Bạn không có quyền truy cập nhé!"
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(400).json({
+                success: false,
+                message: "Lỗi quá trình xác thực!"
             });
         }
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({
-            success: false,
-            message: "Lỗi quá trình xác thực!"
-        });
-    }
+    })
+
 };
 
 module.exports = JWT_Authenticate;

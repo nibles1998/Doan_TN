@@ -1,3 +1,5 @@
+const authenticate = require('../middleware/authenticate');
+
 const role = {};
 
 role.checkRole = function (roleType, roleOption) {
@@ -32,7 +34,31 @@ role.checkRole = function (roleType, roleOption) {
             }
         }
         next();
-    }
-}
+    };
+};
+
+role.checkRoleQuery = function (queries, roleType, roleOption) {
+    return async function (req, res, next) {
+        const query = req.query;
+        const allKey = Object.keys(query);
+
+        if (allKey.length > 0) {
+            for (let item of queries) {
+                if (query[item]) {
+                    await authenticate.authenticateJWT(req, res, next);
+                    console.log("res.headersSent: ", res.headersSent);
+                    
+                    if (res.headersSent === true) {
+                        console.log("Run 1");
+                        return next(false)
+                    };
+                    await role.checkRole(roleType, roleOption)(req, res, next);
+                }
+            }
+        } else {
+            return next();
+        }
+    };
+};
 
 module.exports = role;
