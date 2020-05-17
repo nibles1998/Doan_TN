@@ -36,12 +36,14 @@ tour_TypeTourCtrl.getById = async function (req, res, next) {
 tour_TypeTourCtrl.createData = async function (req, res, next) {
     try {
         const { tourId, typeTourId } = req.body;
-        const tour_typeTour = await tour_TypeTourModel.findOne({ where: { tourId } });
-        if (tour_typeTour.typeTourId === typeTourId) {
-            return res.status(400).json({
-                success: false,
-                message: "Connect is exist!"
-            });
+        const tour_TypeTour = await tour_TypeTourModel.findOne({ where: { tourId } });
+        if (tour_TypeTour !== null) {
+            if (tour_TypeTour.typeTourId === typeTourId) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Connect is exist!"
+                });
+            }
         }
         await tour_TypeTourModel.create(req.body);
         res.status(200).json({

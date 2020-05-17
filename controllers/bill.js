@@ -87,7 +87,10 @@ billCtrl.createData = async function (req, res, next) {
         const adult = req.body.adult;
         const price = req.body.price
 
-        if (!child || !adult || !price) {
+        if (!(child !== null && child !== undefined)
+            || !(adult !== null && adult !== undefined)
+            || !(price !== null && price !== undefined)
+        ) {
             return res.status(400).json({
                 success: false,
                 message: "Child or Adult or Price is required!"
@@ -98,10 +101,10 @@ billCtrl.createData = async function (req, res, next) {
         req.body.total = total;
 
         if (req.body.hasPaied === true) {
-            const now = moment().toNow();
+            const now = moment();
             req.body.paiedDate = now;
         } else {
-            req.body.paiedDate = null;
+            req.body.paiedDate = req.body.applyDate;
         }
 
         req.body.hasCancel = false;
@@ -126,7 +129,10 @@ billCtrl.updateById = async function (req, res, next) {
         const adult = req.body.adult;
         const price = req.body.price;
 
-        if (!child || !adult || !price) {
+        if (!(child !== null && child !== undefined)
+            || !(adult !== null && adult !== undefined)
+            || !(price !== null && price !== undefined)
+        ) {
             return res.status(400).json({
                 success: false,
                 message: "Child or Adult or Price is required!"
@@ -137,7 +143,7 @@ billCtrl.updateById = async function (req, res, next) {
         req.body.total = total;
 
         if (req.body.hasPaied === true) {
-            const now = moment().toNow();
+            const now = moment();
             req.body.paiedDate = now;
             const bill = billModel.findByPk(id);
             if (bill.applyDate < now) {
