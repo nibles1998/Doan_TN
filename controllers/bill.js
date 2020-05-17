@@ -86,6 +86,14 @@ billCtrl.createData = async function (req, res, next) {
         const child = req.body.child;
         const adult = req.body.adult;
         const price = req.body.price
+
+        if (!child || !adult || !price) {
+            return res.status(400).json({
+                success: false,
+                message: "Child or Adult or Price is required!"
+            });
+        }
+
         const total = (child * 0.8 * price) + (adult * price);
         req.body.total = total;
 
@@ -116,7 +124,15 @@ billCtrl.updateById = async function (req, res, next) {
         const { id } = req.params;
         const child = req.body.child;
         const adult = req.body.adult;
-        const price = req.body.price
+        const price = req.body.price;
+
+        if (!child || !adult || !price) {
+            return res.status(400).json({
+                success: false,
+                message: "Child or Adult or Price is required!"
+            });
+        }
+
         const total = (child * 0.8 * price) + (adult * price);
         req.body.total = total;
 
