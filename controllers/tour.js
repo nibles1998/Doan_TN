@@ -29,6 +29,10 @@ tourCtrl.getMany = async function (req, res, next) {
                 whereQuery.location = query[_queryKey];
                 continue;
             }
+            if (_queryKey == "code") {
+                whereQuery.tourCode = query[_queryKey];
+                continue;
+            }
             if (_queryKey == "sortname") {
                 if (query[_queryKey])
                     sortQuery.push(["tourName", query[_queryKey]]);
