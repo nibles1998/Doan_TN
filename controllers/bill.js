@@ -12,6 +12,10 @@ billCtrl.getMany = async function (req, res, next) {
         const allKeys = Object.keys(query);
         for (let index = 0; index < allKeys.length; index++) {
             const _queryKey = allKeys[index];
+            if (_queryKey == "userId") {
+                whereQuery.userId = query[_queryKey];
+                continue;
+            }
             if (_queryKey == "sortprice") {
                 if (query[_queryKey])
                     sortQuery.push(["price", query[_queryKey]]);
