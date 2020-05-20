@@ -4,7 +4,7 @@ const reviewCtrl = {};
 
 reviewCtrl.getMany = async function (req, res, next) {
     try {
-        const review = await reviewModel.findAll();
+        const review = await reviewModel.find();
         res.status(200).json({
             success: true,
             data: review
@@ -19,7 +19,7 @@ reviewCtrl.getMany = async function (req, res, next) {
 
 reviewCtrl.getById = async function (req, res, next) {
     try {
-        const review = await reviewModel.findByPk(req.params.id);
+        const review = await reviewModel.findById(req.params._id);
         res.status(200).json({
             success: true,
             data: review
@@ -49,10 +49,8 @@ reviewCtrl.createData = async function (req, res, next) {
 
 reviewCtrl.updateById = async function (req, res, next) {
     try {
-        const { id } = req.params;
-        await reviewModel.update(req.body, {
-            where: { id }
-        });
+        const { _id } = req.params;
+        await reviewModel.update({ _id }, { $set: req.body }, { new: true });
         res.status(200).json({
             success: true,
             message: "Update Review successfully!"
@@ -67,8 +65,8 @@ reviewCtrl.updateById = async function (req, res, next) {
 
 reviewCtrl.deleteById = async function (req, res, next) {
     try {
-        const { id } = req.params;
-        await reviewModel.destroy({ where: { id } });
+        const { _id } = req.params;
+        await reviewModel.deleteOne({ _id });
         res.status(200).json({
             success: true,
             message: "Delete Review successfully!"

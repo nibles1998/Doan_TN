@@ -1,6 +1,5 @@
 const billModel = require('../models').model.Bill;
 const moment = require('moment');
-const Sequelize = require('sequelize');
 
 const billCtrl = {};
 
@@ -38,8 +37,8 @@ billCtrl.getMany = async function (req, res, next) {
                 const startDate = moment(query[_queryKey]).utc().startOf('day');
                 const endDate = moment(query[_queryKey]).utc().endOf('day');
                 whereQuery.paiedDate = {
-                    [Sequelize.Op.gte]: startDate,
-                    [Sequelize.Op.lte]: endDate
+                    $gte: startDate,
+                    $lte: endDate
                 }
                 continue;
             }
@@ -47,14 +46,14 @@ billCtrl.getMany = async function (req, res, next) {
                 const startDate = moment(query[_queryKey]).utc().startOf('day');
                 const endDate = moment(query[_queryKey]).utc().endOf('day');
                 whereQuery.applyDate = {
-                    [Sequelize.Op.gte]: startDate,
-                    [Sequelize.Op.lte]: endDate
+                    $gte: startDate,
+                    $lte: endDate
                 }
                 continue;
             }
         }
 
-        const bill = await billModel.findAll({
+        const bill = await billModel.find({
             where: whereQuery,
             order: sortQuery
         });
@@ -72,7 +71,7 @@ billCtrl.getMany = async function (req, res, next) {
 
 billCtrl.getById = async function (req, res, next) {
     try {
-        const bill = await billModel.findByPk(req.params.id);
+        const bill = await billModel.findById(req.params._id);
         res.status(200).json({
             success: true,
             data: bill
@@ -128,7 +127,7 @@ billCtrl.createData = async function (req, res, next) {
 
 billCtrl.updateById = async function (req, res, next) {
     try {
-        const { id } = req.params;
+        const { _id } = req.params;
         const child = req.body.child;
         const adult = req.body.adult;
         const price = req.body.price;
@@ -149,7 +148,7 @@ billCtrl.updateById = async function (req, res, next) {
         if (req.body.hasPaied === true) {
             const now = moment();
             req.body.paiedDate = now;
-            const bill = billModel.findByPk(id);
+            const bill = billModel.findById(_id);
             if (bill.applyDate < now) {
                 return res.status(400).json({
                     success: false,
@@ -162,9 +161,7 @@ billCtrl.updateById = async function (req, res, next) {
             req.body.total = total * 0.6;
         }
 
-        await billModel.update(req.body, {
-            where: { id }
-        });
+        await billModel.update({ _id }, { $set: req.body }, { new: true });
         res.status(200).json({
             success: true,
             message: "Update Bill successfully!"
@@ -179,8 +176,8 @@ billCtrl.updateById = async function (req, res, next) {
 
 billCtrl.deleteById = async function (req, res, next) {
     try {
-        const { id } = req.params;
-        await billModel.destroy({ where: { id } });
+        const { _id } = req.params;
+        await billModel.deleteOne({ _id });
         res.status(200).json({
             success: true,
             message: "Delete Bill successfully!"
