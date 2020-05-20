@@ -1,60 +1,16 @@
-const Sequelize = require('sequelize')
-const Model = Sequelize.Model
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-class Review extends Model {
-    constructor(...args) {
-        super(...args)
-    }
-};
+const Review = new Schema({
+    _id: String,
+    userId: String,
+    tourId: String,
+    comment: String,
+    rating: Number,
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
+});
 
-const attrs = {
-    id: {
-        primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        validate: {
-            isUUID: 4
-        }
-    },
-    userId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        validate: {
-            isUUID: 4,
-            notEmpty: true
-        }
-    },
-    tourId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        validate: {
-            isUUID: 4,
-            notEmpty: true
-        }
-    },
-    comment: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    rating: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
-        validate: {
-            isFloat: true,
-            notEmpty: true
-        }
-    }
-}
-
-const options = {}
-
-module.exports = {
-    init: async (instanceDB) => {
-        Review.init(attrs, { ...options, sequelize: instanceDB });
-        await Review.sync();
-    },
-    model: Review
-}
+const model = mongoose.model("Review", Review);
+const doc = new model();
+await doc.save();

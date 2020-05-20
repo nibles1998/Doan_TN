@@ -1,111 +1,23 @@
-const Sequelize = require('sequelize')
-const Model = Sequelize.Model
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-class Bill extends Model {
-    constructor(...args) {
-        super(...args)
-    }
-};
+const Bill = new Schema({
+    _id: String,
+    userId: String,
+    tourId: String,
+    child: Number,
+    adult: Number,
+    price: Number,
+    total: Number,
+    hasPaied: Boolean,
+    hasCancel: Boolean,
+    paiedDate: Date,
+    applyDate: Date,
+    paymentMethod: Array,
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now }
+});
 
-const attrs = {
-    id: {
-        primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        validate: {
-            isUUID: 4
-        }
-    },
-    userId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        validate: {
-            isUUID: 4,
-            notEmpty: true
-        }
-    },
-    tourId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        validate: {
-            isUUID: 4,
-            notEmpty: true
-        }
-    },
-    child: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        validate: {
-            isInt: true,
-            notEmpty: true
-        }
-    },
-    adult: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        validate: {
-            isInt: true,
-            notEmpty: true
-        }
-    },
-    price: {
-        type: Sequelize.DOUBLE,
-        allowNull: false,
-        validate: {
-            isFloat: true,
-            notEmpty: true
-        }
-    },
-    total: {
-        type: Sequelize.DOUBLE,
-        allowNull: false,
-        validate: {
-            isFloat: true,
-            notEmpty: true
-        }
-    },
-    hasPaied: {
-        type: Sequelize.BOOLEAN,
-    },
-    hasCancel: {
-        type: Sequelize.BOOLEAN,
-    },
-    paiedDate: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    applyDate: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    paymentMethod: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        },
-        get: function () {
-            return JSON.parse(this.getDataValue("paymentMethod"));
-        },
-        set: function (val) {
-            return this.setDataValue("paymentMethod", JSON.stringify(val));
-        }
-    }
-}
-
-const options = {}
-
-module.exports = {
-    init: async (instanceDB) => {
-
-        Bill.init(attrs, { ...options, sequelize: instanceDB });
-        await Bill.sync();
-    },
-    model: Bill
-}
+const model = mongoose.model("Bill", Bill);
+const doc = new model();
+await doc.save();
