@@ -1,6 +1,6 @@
 const AppConfig = {
     PORT: 4444,
-    DATABASE: {
+    POSTGRES_DB: {
         DATABASENAME: 'demonode',
         USERNAME: 'postgres',
         PASSWORD: 'nibles1504',
