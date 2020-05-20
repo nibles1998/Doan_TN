@@ -11,13 +11,13 @@ const connectDB = async function () {
         logging: false
     })
     await mongoose.connect(`mongodb://${mongoConfig.HOST}:${mongoConfig.PORT}/${mongoConfig.DBNAME}`, {useNewUrlParser: true, useUnifiedTopology: true});
-    // await instanceDB.authenticate()
-    //     .then(() => {
-    //         console.log("Database already!");
-    //     })
-    //     .catch((e) => {
-    //         throw e
-    //     })
+    await instanceDB.authenticate()
+        .then(() => {
+            console.log("Database already!");
+        })
+        .catch((e) => {
+            throw e
+        })
     return instanceDB;
 }
 
