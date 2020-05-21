@@ -62,5 +62,6 @@ module.exports = {
         }
 
     },
-    model: Tour_TypeTour
+    model: Tour_TypeTour,
+    type: "postgresql"
 }

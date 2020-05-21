@@ -12,5 +12,11 @@ const Review = new Schema({
 });
 
 const model = mongoose.model("Review", Review);
-const doc = new model();
-await doc.save();
+
+module.exports = {
+    type: "mongodb",
+    model,
+}
+// tương tự đọc comment bên model Bill
+// const doc = new model();
+// await doc.save();

@@ -46,5 +46,6 @@ module.exports = {
         UserRole.init(attrs, { ...options, sequelize: instanceDB });
         await UserRole.sync();
     },
-    model: UserRole
+    model: UserRole,
+    type: "postgresql"
 }

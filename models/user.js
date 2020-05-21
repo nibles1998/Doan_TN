@@ -114,5 +114,6 @@ module.exports = {
         User.init(attrs, { ...options, sequelize: instanceDB });
         await User.sync();
     },
-    model: User
+    model: User,
+    type: "postgresql"
 }

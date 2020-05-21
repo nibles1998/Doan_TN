@@ -59,5 +59,6 @@ module.exports = {
         Company.init(attrs, { ...options, sequelize: instanceDB });
         await Company.sync();
     },
-    model: Company
+    model: Company,
+    type: "postgresql"
 }

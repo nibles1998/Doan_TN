@@ -112,5 +112,6 @@ module.exports = {
         Tour.init(attrs, { ...options, sequelize: instanceDB });
         await Tour.sync();
     },
-    model: Tour
+    model: Tour,
+    type: "postgresql"
 }

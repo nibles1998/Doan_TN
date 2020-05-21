@@ -33,5 +33,6 @@ module.exports = {
         TypeTour.init(attrs, { ...options, sequelize: instanceDB });
         await TypeTour.sync();
     },
-    model: TypeTour
+    model: TypeTour,
+    type: "postgresql"
 }

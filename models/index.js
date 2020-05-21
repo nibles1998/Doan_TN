@@ -17,7 +17,9 @@ const requireFile = function (srcPath, obj) {
                 stat = fs.lstatSync(curPath);
                 if (stat.isFile() && f.endsWith(".js")) {
                     const output = await require(curPath);
-                    await output.init(instanceDB);
+                    if (output.type == "postgresql") {
+                        await output.init(instanceDB);
+                    }
                     rKey = f[0].toUpperCase() + f.substr(1, f.length - 4);
                     obj[rKey] = output.model;
                 }
