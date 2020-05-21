@@ -1,4 +1,5 @@
 const billModel = require('../models').model.Bill;
+const tourModel = require('../models').model.Tour;
 const moment = require('moment');
 
 const billCtrl = {};
@@ -104,7 +105,8 @@ billCtrl.createData = async function (req, res, next) {
             const now = moment();
             req.body.paiedDate = now;
         } else {
-            req.body.paiedDate = req.body.applyDate;
+            const pay = Date.parse(req.body.applyDate) - 172800000;
+            req.body.paiedDate = new Date(pay);
         }
 
         req.body.hasCancel = false;
@@ -125,37 +127,47 @@ billCtrl.createData = async function (req, res, next) {
 billCtrl.updateById = async function (req, res, next) {
     try {
         const { _id } = req.params;
-        const child = req.body.child;
-        const adult = req.body.adult;
-        const price = req.body.price;
-
-        if (!(child !== null && child !== undefined)
-            || !(adult !== null && adult !== undefined)
-            || !(price !== null && price !== undefined)
-        ) {
-            return res.status(400).json({
-                success: false,
-                message: "Child or Adult or Price is required!"
-            });
-        }
-
-        const total = (child * 0.8 * price) + (adult * price);
-        req.body.total = total;
-
-        if (req.body.hasPaied === true) {
-            const now = moment();
-            req.body.paiedDate = now;
-            const bill = billModel.findById(_id);
-            if (bill.applyDate < now) {
-                return res.status(400).json({
-                    success: false,
-                    message: "You haven't paid me yet!"
-                });
-            }
-        }
 
         if (req.body.hasCancel === true) {
-            req.body.total = total * 0.6;
+            const bill = await billModel.findById(_id);
+            const tour = await tourModel.findByPk(bill.tourId);
+
+            const whereQuery = {
+                child: tour.child - bill.child,
+                adult: tour.adult - bill.adult,
+                emptySeat: tour.emptySeat + bill.child + bill.adult
+            };
+
+            await tourModel.update(whereQuery, { where: { id: bill.tourId } });
+        } else {
+            const child = req.body.child;
+            const adult = req.body.adult;
+            const price = req.body.price;
+
+            if (!(child !== null && child !== undefined)
+                || !(adult !== null && adult !== undefined)
+                || !(price !== null && price !== undefined)
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Child or Adult or Price is required!"
+                });
+            }
+
+            const total = (child * 0.8 * price) + (adult * price);
+            req.body.total = total;
+
+            if (req.body.hasPaied === true) {
+                const now = moment();
+                req.body.paiedDate = now;
+                const bill = await billModel.findById(_id);
+                if (bill.applyDate < now) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "You haven't paid me yet!"
+                    });
+                }
+            }
         }
 
         await billModel.update({ _id }, { $set: req.body }, { new: true });

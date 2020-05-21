@@ -83,26 +83,27 @@ tourCtrl.getById = async function (req, res, next) {
 
 tourCtrl.createData = async function (req, res, next) {
     try {
-        const { tourCode, seat, emptySeat, startedDate, endDate } = req.body;
+        const { tourCode, seat, startedDate, endDate } = req.body;
         const tour = await tourModel.findOne({ where: { tourCode } });
+
         if (tour) {
             return res.status(400).json({
                 success: false,
                 message: "TourCode is exist!"
             });
         }
-        if (seat !== emptySeat) {
-            return res.status(400).json({
-                success: false,
-                message: "Seat not equal emptySeat!"
-            });
-        }
+
+        req.body.emptySeat = seat;
+        req.body.child = 0;
+        req.body.adult = 0;
+
         if (endDate < startedDate) {
             return res.status(400).json({
                 success: false,
                 message: "endDate is smaller than startedDate!"
             });
         }
+
         await tourModel.create(req.body);
         return res.status(200).json({
             success: true,
@@ -119,7 +120,7 @@ tourCtrl.createData = async function (req, res, next) {
 tourCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        const { tourCode, seat, emptySeat, startedDate, endDate, child, adult } = req.body;
+        const { tourCode, seat, startedDate, endDate, child, adult } = req.body;
         const tour = await tourModel.findByPk(id);
         if (tourCode) {
             const code = await tourModel.findOne({ where: { tourCode } });
@@ -132,7 +133,7 @@ tourCtrl.updateById = async function (req, res, next) {
         }
 
         if (seat) {
-            if (seat < (tour.child + tour.adult + tour.emptySeat)) {
+            if (seat !== (tour.child + tour.adult + tour.emptySeat)) {
                 return res.status(400).json({
                     success: false,
                     message: "Wrong number of seats!"
@@ -140,8 +141,8 @@ tourCtrl.updateById = async function (req, res, next) {
             }
         }
 
-        if (child && adult && emptySeat) {
-            if ((child + adult) > emptySeat) {
+        if (child && adult) {
+            if ((child + adult) > tour.emptySeat) {
                 return res.status(400).json({
                     success: false,
                     message: "Not enough emptySeat!"
@@ -151,7 +152,7 @@ tourCtrl.updateById = async function (req, res, next) {
 
         if (endDate || startedDate) {
             if (endDate) {
-                if (endDate < tour.startedDate) {
+                if (endDate <= tour.startedDate) {
                     return res.status(400).json({
                         success: false,
                         message: "endDate input is smaller than startedDate!"
@@ -160,7 +161,7 @@ tourCtrl.updateById = async function (req, res, next) {
             }
 
             if (startedDate) {
-                if (tour.endDate < startedDate) {
+                if (tour.endDate <= startedDate) {
                     return res.status(400).json({
                         success: false,
                         message: "endDate is smaller than startedDate input!"
