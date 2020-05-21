@@ -7,7 +7,7 @@ billCtrl.getMany = async function (req, res, next) {
     try {
         const query = req.query;
         const whereQuery = {};
-        const sortQuery = [];
+        const sortQuery = {};
         const allKeys = Object.keys(query);
         for (let index = 0; index < allKeys.length; index++) {
             const _queryKey = allKeys[index];
@@ -17,12 +17,12 @@ billCtrl.getMany = async function (req, res, next) {
             }
             if (_queryKey == "sortprice") {
                 if (query[_queryKey])
-                    sortQuery.push(["price", query[_queryKey]]);
+                    sortQuery["price"] = query[_queryKey];
                 continue;
             }
             if (_queryKey == "sorttotal") {
                 if (query[_queryKey])
-                    sortQuery.push(["total", query[_queryKey]]);
+                    sortQuery["total"] = query[_queryKey];
                 continue;
             }
             if (_queryKey == "paied") {
@@ -53,10 +53,7 @@ billCtrl.getMany = async function (req, res, next) {
             }
         }
 
-        const bill = await billModel.find({
-            where: whereQuery,
-            order: sortQuery
-        });
+        const bill = await billModel.find(whereQuery).sort(sortQuery);
         res.status(200).json({
             success: true,
             data: bill

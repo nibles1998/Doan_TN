@@ -5,6 +5,13 @@ const role = {};
 role.checkRole = function (roleType, roleOption) {
     return async function (req, res, next) {
         const userRole = req.role;
+        if (!userRole.type) {
+            return res.status(403).json({
+                success: false,
+                message: "Bạn không có quyền truy cập chức năng này!"
+            });
+        }
+        
         if (roleType.length > 0 && roleType !== null && roleType !== undefined) {
             let checkType = false;
             for (let role of roleType) {

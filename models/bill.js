@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Bill = new Schema({
-    _id: String,
     userId: String,
     tourId: String,
     child: Number,
