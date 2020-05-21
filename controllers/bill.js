@@ -127,50 +127,86 @@ billCtrl.createData = async function (req, res, next) {
 billCtrl.updateById = async function (req, res, next) {
     try {
         const { _id } = req.params;
+        const bill = await billModel.findById(_id);
+        const tour = await tourModel.findByPk(bill.tourId);
+
+        if (bill.hasCancel) {
+            return res.status(400).json({
+                success: false,
+                message: "Bill is reject!"
+            });
+        }
 
         if (req.body.hasCancel === true) {
-            const bill = await billModel.findById(_id);
-            const tour = await tourModel.findByPk(bill.tourId);
-
-            const whereQuery = {
+            const queryTour = {
                 child: tour.child - bill.child,
                 adult: tour.adult - bill.adult,
                 emptySeat: tour.emptySeat + bill.child + bill.adult
             };
 
-            await tourModel.update(whereQuery, { where: { id: bill.tourId } });
+            await tourModel.update(queryTour, { where: { id: bill.tourId } });
+            await billModel.updateOne({ _id }, { $set: req.body }, { new: true });
         } else {
             const child = req.body.child;
             const adult = req.body.adult;
             const price = req.body.price;
 
-            if (!(child !== null && child !== undefined)
-                || !(adult !== null && adult !== undefined)
-                || !(price !== null && price !== undefined)
-            ) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Child or Adult or Price is required!"
-                });
-            }
+            let queryTour = {
+                child: tour.child,
+                adult: tour.adult
+            };
 
-            const total = (child * 0.8 * price) + (adult * price);
-            req.body.total = total;
+            let queryBill = {
+                child: bill.child,
+                adult: bill.adult
+            };
 
-            if (req.body.hasPaied === true) {
-                const now = moment();
-                req.body.paiedDate = now;
-                const bill = await billModel.findById(_id);
-                if (bill.applyDate < now) {
-                    return res.status(400).json({
-                        success: false,
-                        message: "You haven't paid me yet!"
-                    });
+            if (child !== null && child !== undefined) {
+                if (child !== bill.child) {
+                    queryTour.child = tour.child + child - bill.child;
+                    queryBill.child = child;
                 }
             }
+
+            if (adult !== null && adult !== undefined) {
+                if (adult !== bill.adult) {
+                    queryTour.adult = tour.adult + adult - bill.child;
+                    queryBill.adult = adult;
+                }
+            }
+
+            if (price !== null && price !== undefined) {
+                queryBill.price = price;
+                const total = (queryBill.child * 0.8 * price) + (queryBill.adult * price);
+                queryBill.total = total;
+            } else {
+                const total = (queryBill.child * 0.8 * bill.price) + (queryBill.adult * bill.price);
+                queryBill.total = total;
+            }
+
+            queryTour.emptySeat = tour.emptySeat - ((queryTour.child + queryTour.adult) - (bill.child + bill.adult));
+
+            await tourModel.update(queryTour, { where: { id: tour.id } });
+            
+            if (!bill.hasPaied) {
+                if (req.body.hasPaied === true) {
+                    queryBill.hasPaied = true;
+                    const now = moment();
+
+                    const bill = await billModel.findById(_id);
+                    if (bill.applyDate < now) {
+                        return res.status(400).json({
+                            success: false,
+                            message: "You haven't paid me yet!"
+                        });
+                    }
+                    queryBill.paiedDate = now;
+                }
+            }
+
+            await billModel.updateOne({ _id }, { $set: queryBill }, { new: true });
         }
 
-        await billModel.update({ _id }, { $set: req.body }, { new: true });
         res.status(200).json({
             success: true,
             message: "Update Bill successfully!"
