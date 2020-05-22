@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const Review = new Schema({
     userId: String,
     tourId: String,
-    comment: String,
-    rating: Number,
+    comment: { type: String, min: 1, max: 500 },
+    rating: { type: Number, min: 1, max: 5 },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 });
@@ -16,6 +16,3 @@ module.exports = {
     type: "mongodb",
     model,
 }
-// tương tự đọc comment bên model Bill
-// const doc = new model();
-// await doc.save();

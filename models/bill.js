@@ -23,6 +23,3 @@ module.exports = {
     type: "mongodb",
     model,
 }
-// không cần tbiết, mongodb bẳng chất không cần khai báo model ( dùng mongoose nên phải khai báo thôi), m insert 1 doc mới collection, nếu collection đó ko có thì mongo tự khởi tạo.
-// const doc = new model();
-// await doc.save();
