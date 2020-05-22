@@ -204,6 +204,8 @@ billCtrl.updateById = async function (req, res, next) {
                 }
             }
 
+            const now = new Date();
+            queryBill.updatedAt = now;
             await billModel.updateOne({ _id }, { $set: queryBill }, { new: true });
         }
 

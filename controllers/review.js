@@ -70,6 +70,8 @@ reviewCtrl.createData = async function (req, res, next) {
 reviewCtrl.updateById = async function (req, res, next) {
     try {
         const { _id } = req.params;
+        const now = new Date();
+        req.body.updatedAt = now;
         await reviewModel.update({ _id }, { $set: req.body }, { new: true });
         res.status(200).json({
             success: true,
