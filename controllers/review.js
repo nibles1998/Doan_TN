@@ -4,7 +4,27 @@ const reviewCtrl = {};
 
 reviewCtrl.getMany = async function (req, res, next) {
     try {
-        const review = await reviewModel.find();
+        const query = req.query;
+        const whereQuery = {};
+        const sortQuery = {};
+        const allKeys = Object.keys(query);
+        for (let index = 0; index < allKeys.length; index++) {
+            const _queryKey = allKeys[index];
+            if (_queryKey == "userId") {
+                whereQuery.userId = query[_queryKey];
+                continue;
+            }
+            if (_queryKey == "tourId") {
+                whereQuery.tourId = query[_queryKey];
+                continue;
+            }
+            if (_queryKey == "sortrating") {
+                sortQuery["rating"] = query[_queryKey];
+                continue;
+            }
+        }
+
+        const review = await reviewModel.find(whereQuery).sort(sortQuery);
         res.status(200).json({
             success: true,
             data: review
