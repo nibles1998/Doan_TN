@@ -4,7 +4,18 @@ const userRoleCtrl = {};
 
 userRoleCtrl.getMany = async function (req, res, next) {
     try {
-        const userRole = await userRoleModel.findAll();
+        const query = req.query;
+        const whereQuery = {};
+        const allKeys = Object.keys(query);
+        for (let index = 0; index < allKeys.length; index++) {
+            const _queryKey = allKeys[index];
+            if (_queryKey == "type") {
+                whereQuery.type = query[_queryKey];
+                continue;
+            }
+        }
+
+        const userRole = await userRoleModel.findAll({ where: whereQuery });
         res.status(200).json({
             success: true,
             data: userRole

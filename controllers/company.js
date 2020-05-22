@@ -4,7 +4,18 @@ const companyCtrl = {};
 
 companyCtrl.getMany = async function (req, res, next) {
     try {
-        const company = await companyModel.findAll();
+        const query = req.query;
+        const whereQuery = {};
+        const allKeys = Object.keys(query);
+        for (let index = 0; index < allKeys.length; index++) {
+            const _queryKey = allKeys[index];
+            if (_queryKey == "name") {
+                whereQuery.companyName = query[_queryKey];
+                continue;
+            }
+        }
+        
+        const company = await companyModel.findAll({ where: whereQuery });
         res.status(200).json({
             success: true,
             data: company
