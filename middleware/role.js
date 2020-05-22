@@ -61,6 +61,7 @@ role.checkRoleQuery = function (queries, roleType, roleOption) {
                     await role.checkRole(roleType, roleOption)(req, res, next);
                 }
             }
+            return next();
         } else {
             return next();
         }

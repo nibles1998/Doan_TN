@@ -38,8 +38,8 @@ billCtrl.getMany = async function (req, res, next) {
                 const startDate = moment(query[_queryKey]).utc().startOf('day');
                 const endDate = moment(query[_queryKey]).utc().endOf('day');
                 whereQuery.paiedDate = {
-                    $gte: startDate,
-                    $lte: endDate
+                    $gte: new Date(startDate),
+                    $lte: new Date(endDate)
                 }
                 continue;
             }
@@ -47,8 +47,8 @@ billCtrl.getMany = async function (req, res, next) {
                 const startDate = moment(query[_queryKey]).utc().startOf('day');
                 const endDate = moment(query[_queryKey]).utc().endOf('day');
                 whereQuery.applyDate = {
-                    $gte: startDate,
-                    $lte: endDate
+                    $gte: new Date(startDate),
+                    $lte: new Date(endDate)
                 }
                 continue;
             }
@@ -187,7 +187,7 @@ billCtrl.updateById = async function (req, res, next) {
             queryTour.emptySeat = tour.emptySeat - ((queryTour.child + queryTour.adult) - (bill.child + bill.adult));
 
             await tourModel.update(queryTour, { where: { id: tour.id } });
-            
+
             if (!bill.hasPaied) {
                 if (req.body.hasPaied === true) {
                     queryBill.hasPaied = true;
