@@ -3,7 +3,7 @@ const tourCtrl = require('../controllers').controller.Tour;
 const authenticate = require('../middleware/authenticate');
 const role = require('../middleware/role');
 
-tourRoute.get('/s', role.checkRoleQuery(["code"], ["Admin"], { read: true }), tourCtrl.getMany);
+tourRoute.get('/s', role.checkRoleQuery(["code", "companyid"], ["Admin"], { read: true }), tourCtrl.getMany);
 tourRoute.get('/:id', tourCtrl.getById);
 tourRoute.post('/', authenticate.authenticateJWT, role.checkRole(["Admin"], { create: true }), tourCtrl.createData);
 tourRoute.put('/:id', authenticate.authenticateJWT, role.checkRole(["Admin"], { up: true }), tourCtrl.updateById);

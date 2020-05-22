@@ -12,7 +12,7 @@ billCtrl.getMany = async function (req, res, next) {
         const allKeys = Object.keys(query);
         for (let index = 0; index < allKeys.length; index++) {
             const _queryKey = allKeys[index];
-            if (_queryKey == "userId") {
+            if (_queryKey == "userid") {
                 whereQuery.userId = query[_queryKey];
                 continue;
             }

@@ -43,6 +43,10 @@ tourCtrl.getMany = async function (req, res, next) {
                     sortQuery.push(["price", query[_queryKey]]);
                 continue;
             }
+            if (_queryKey == "companyid") {
+                whereQuery.companyId = query[_queryKey];
+                continue;
+            }
         }
 
         const tour = await tourModel.findAll({
