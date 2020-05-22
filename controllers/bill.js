@@ -102,10 +102,11 @@ billCtrl.createData = async function (req, res, next) {
         req.body.total = total;
 
         if (req.body.hasPaied === true) {
-            const now = moment();
+            const now = moment().utc();
             req.body.paiedDate = now;
         } else {
-            const pay = Date.parse(req.body.applyDate) - 172800000;
+            const applyDate = moment(req.body.applyDate).utc();
+            const pay = Date.parse(applyDate) - 172800000;
             req.body.paiedDate = new Date(pay);
         }
 

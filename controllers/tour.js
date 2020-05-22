@@ -87,7 +87,8 @@ tourCtrl.getById = async function (req, res, next) {
 
 tourCtrl.createData = async function (req, res, next) {
     try {
-        const { tourCode, seat, startedDate, endDate } = req.body;
+        const { tourCode, seat } = req.body;
+        let { startedDate, endDate } = req.body;
         const tour = await tourModel.findOne({ where: { tourCode } });
 
         if (tour) {
@@ -100,6 +101,11 @@ tourCtrl.createData = async function (req, res, next) {
         req.body.emptySeat = seat;
         req.body.child = 0;
         req.body.adult = 0;
+
+        startedDate = moment(startedDate).utc();
+        endDate = moment(endDate).utc();
+        req.body.startedDate = startedDate;
+        req.body.endDate = endDate;
 
         if (endDate < startedDate) {
             return res.status(400).json({
@@ -124,7 +130,8 @@ tourCtrl.createData = async function (req, res, next) {
 tourCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        const { tourCode, seat, startedDate, endDate, child, adult } = req.body;
+        const { tourCode, seat, child, adult } = req.body;
+        let { startedDate, endDate } = req.body;
         const tour = await tourModel.findByPk(id);
         if (tourCode) {
             const code = await tourModel.findOne({ where: { tourCode } });
@@ -155,6 +162,11 @@ tourCtrl.updateById = async function (req, res, next) {
         }
 
         if (endDate || startedDate) {
+            startedDate = moment(startedDate).utc();
+            endDate = moment(endDate).utc();
+            req.body.startedDate = startedDate;
+            req.body.endDate = endDate;
+
             if (endDate) {
                 if (endDate <= tour.startedDate) {
                     return res.status(400).json({

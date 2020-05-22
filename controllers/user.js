@@ -50,7 +50,8 @@ userCtrl.getById = async function (req, res, next) {
 
 userCtrl.createData = async function (req, res, next) {
     try {
-        let { email, password } = req.body;
+        let { email, password, dateOfBirth } = req.body;
+
         const user = await userModel.findOne({ where: { email } });
         if (user) {
             return res.status(400).json({
@@ -60,6 +61,12 @@ userCtrl.createData = async function (req, res, next) {
         }
         const hash = bcrypt.hashSync(password, salt);
         req.body.password = hash;
+
+        if (dateOfBirth) {
+            dateOfBirth = moment(dateOfBirth).utc();
+            req.body.dateOfBirth = dateOfBirth;
+        }
+
         await userModel.create(req.body);
         return res.status(200).json({
             success: true,
@@ -77,10 +84,18 @@ userCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
         const { password } = req.body;
+        let { dateOfBirth } = req.body;
+
         if (password) {
             const hash = bcrypt.hashSync(password, salt);
             req.body.password = hash;
         }
+
+        if (dateOfBirth) {
+            dateOfBirth = moment(dateOfBirth).utc();
+            req.body.dateOfBirth = dateOfBirth;
+        }
+
         await userModel.update(req.body, {
             where: { id }
         });
