@@ -92,6 +92,14 @@ const attrs = {
             notEmpty: true
         }
     },
+    time: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            min: 3,
+            notEmpty: true
+        }
+    },
     note: {
         type: Sequelize.STRING,
     },

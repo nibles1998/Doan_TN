@@ -47,6 +47,10 @@ tourCtrl.getMany = async function (req, res, next) {
                 whereQuery.companyId = query[_queryKey];
                 continue;
             }
+            if (_queryKey == "time") {
+                whereQuery.time = [query[_queryKey]];
+                continue;
+            }
         }
 
         const tour = await tourModel.findAll({
@@ -87,7 +91,7 @@ tourCtrl.getById = async function (req, res, next) {
 
 tourCtrl.createData = async function (req, res, next) {
     try {
-        const { tourCode, seat } = req.body;
+        const { tourCode, seat, time } = req.body;
         let { startedDate, endDate } = req.body;
         const tour = await tourModel.findOne({ where: { tourCode } });
 
@@ -96,6 +100,17 @@ tourCtrl.createData = async function (req, res, next) {
                 success: false,
                 message: "TourCode is exist!"
             });
+        }
+
+        if (time) {
+            if (time < 3) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Time greater than or equal to 3"
+                });
+            }
+        } else {
+            req.body.time = 3;
         }
 
         req.body.emptySeat = seat;
@@ -130,7 +145,7 @@ tourCtrl.createData = async function (req, res, next) {
 tourCtrl.updateById = async function (req, res, next) {
     try {
         const { id } = req.params;
-        const { tourCode, seat, child, adult } = req.body;
+        const { tourCode, seat, child, adult, time } = req.body;
         let { startedDate, endDate } = req.body;
         const tour = await tourModel.findByPk(id);
         if (tourCode) {
@@ -139,6 +154,15 @@ tourCtrl.updateById = async function (req, res, next) {
                 return res.status(400).json({
                     success: false,
                     message: "TourCode is exist!"
+                });
+            }
+        }
+
+        if (time) {
+            if (time < 3) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Time greater than or equal to 3"
                 });
             }
         }
