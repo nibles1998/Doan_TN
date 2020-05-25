@@ -1,6 +1,7 @@
 const userModel = require('../models').model.User;
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSaltSync(10);
+const moment = require('moment');
 
 const userCtrl = {};
 
