@@ -3,6 +3,7 @@ const fs = require("fs"),
 const express = require('express');
 const bodyParser = require('body-parser');
 const App = {}, ignorePath = ["node_modules", ".git"];
+const cors = require('cors');
 
 const isIgnore = function (path) {
     return ignorePath.indexOf(path) !== -1;
@@ -35,6 +36,7 @@ const startServer = async function () {
     const server = express();
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(bodyParser.json());
+    server.use(cors());
     server.use((req, res, next) => {
         console.log(`Request comming: ${req.url}`)
         next()
