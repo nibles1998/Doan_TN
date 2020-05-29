@@ -87,6 +87,7 @@ billCtrl.createData = async function (req, res, next) {
         const child = req.body.child;
         const adult = req.body.adult;
         const price = req.body.price
+        const tour = await tourModel.findByPk(req.body.tourId);
 
         if (!(child !== null && child !== undefined)
             || !(adult !== null && adult !== undefined)
@@ -97,6 +98,22 @@ billCtrl.createData = async function (req, res, next) {
                 message: "Child or Adult or Price is required!"
             });
         }
+
+        if (tour.emptySeat < (child + adult)) {
+            return res.status(400).json({
+                success: false,
+                message: "Not enough empty seat!"
+            });
+        }
+
+        const queryTour = {
+            child: tour.child - child,
+            adult: tour.adult - adult,
+            emptySeat: tour.emptySeat - (child + adult)
+        };
+
+        await tourModel.update(queryTour, { where: { id: tour.id } });
+
 
         const total = (child * 0.8 * price) + (adult * price);
         req.body.total = total;
