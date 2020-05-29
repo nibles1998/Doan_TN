@@ -117,8 +117,8 @@ tourCtrl.createData = async function (req, res, next) {
         req.body.child = 0;
         req.body.adult = 0;
 
-        startedDate = moment(startedDate).utc();
-        endDate = moment(endDate).utc();
+        startedDate = new Date(startedDate);
+        endDate = new Date(endDate);
         req.body.startedDate = startedDate;
         req.body.endDate = endDate;
 
@@ -186,8 +186,8 @@ tourCtrl.updateById = async function (req, res, next) {
         }
 
         if (endDate || startedDate) {
-            startedDate = moment(startedDate).utc();
-            endDate = moment(endDate).utc();
+            startedDate = new Date(startedDate);
+            endDate = new Date(endDate);
             req.body.startedDate = startedDate;
             req.body.endDate = endDate;
 

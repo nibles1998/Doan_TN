@@ -1,7 +1,6 @@
 const userModel = require('../models').model.User;
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSaltSync(10);
-const moment = require('moment');
 
 const userCtrl = {};
 
@@ -64,7 +63,7 @@ userCtrl.createData = async function (req, res, next) {
         req.body.password = hash;
 
         if (dateOfBirth) {
-            dateOfBirth = moment(dateOfBirth).utc();
+            dateOfBirth = new Date(dateOfBirth);
             req.body.dateOfBirth = dateOfBirth;
         }
 
@@ -93,7 +92,7 @@ userCtrl.updateById = async function (req, res, next) {
         }
 
         if (dateOfBirth) {
-            dateOfBirth = moment(dateOfBirth).utc();
+            dateOfBirth = new Date(dateOfBirth);
             req.body.dateOfBirth = dateOfBirth;
         }
 
