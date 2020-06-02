@@ -63,7 +63,7 @@ userCtrl.createData = async function (req, res, next) {
         req.body.password = hash;
 
         if (dateOfBirth) {
-            dateOfBirth = new Date(dateOfBirth);
+            dateOfBirth = new Date(dateOfBirth).toLocaleString({ timeZone: "VN" });
             req.body.dateOfBirth = dateOfBirth;
         }
 
@@ -92,7 +92,7 @@ userCtrl.updateById = async function (req, res, next) {
         }
 
         if (dateOfBirth) {
-            dateOfBirth = new Date(dateOfBirth);
+            dateOfBirth = new Date(dateOfBirth).toLocaleString({ timeZone: "VN" });
             req.body.dateOfBirth = dateOfBirth;
         }
 

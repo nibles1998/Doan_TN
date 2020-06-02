@@ -38,8 +38,8 @@ billCtrl.getMany = async function (req, res, next) {
                 const startDate = moment(query[_queryKey]).utc().startOf('day');
                 const endDate = moment(query[_queryKey]).utc().endOf('day');
                 whereQuery.paiedDate = {
-                    $gte: new Date(startDate),
-                    $lte: new Date(endDate)
+                    $gte: new Date(startDate).toLocaleString({ timeZone: "VN" }),
+                    $lte: new Date(endDate).toLocaleString({ timeZone: "VN" })
                 }
                 continue;
             }
@@ -47,8 +47,8 @@ billCtrl.getMany = async function (req, res, next) {
                 const startDate = moment(query[_queryKey]).utc().startOf('day');
                 const endDate = moment(query[_queryKey]).utc().endOf('day');
                 whereQuery.applyDate = {
-                    $gte: new Date(startDate),
-                    $lte: new Date(endDate)
+                    $gte: new Date(startDate).toLocaleString({ timeZone: "VN" }),
+                    $lte: new Date(endDate).toLocaleString({ timeZone: "VN" })
                 }
                 continue;
             }
@@ -119,12 +119,12 @@ billCtrl.createData = async function (req, res, next) {
         req.body.total = total;
 
         if (req.body.hasPaied === true) {
-            const now = new Date();
+            const now = new Date().toLocaleString({ timeZone: "VN" });
             req.body.paiedDate = now;
         } else {
-            const applyDate = new Date(req.body.applyDate);
+            const applyDate = new Date(req.body.applyDate).toLocaleString({ timeZone: "VN" });
             const pay = Date.parse(applyDate) - 172800000;
-            req.body.paiedDate = new Date(pay);
+            req.body.paiedDate = new Date(pay).toLocaleString({ timeZone: "VN" });
         }
 
         req.body.hasCancel = false;
@@ -209,7 +209,7 @@ billCtrl.updateById = async function (req, res, next) {
             if (!bill.hasPaied) {
                 if (req.body.hasPaied === true) {
                     queryBill.hasPaied = true;
-                    const now = new Date();
+                    const now = new Date().toLocaleString({ timeZone: "VN" });
 
                     const bill = await billModel.findById(_id);
                     if (bill.applyDate < now) {
@@ -222,7 +222,7 @@ billCtrl.updateById = async function (req, res, next) {
                 }
             }
 
-            const now = new Date();
+            const now = new Date().toLocaleString({ timeZone: "VN" });
             queryBill.updatedAt = now;
             await billModel.updateOne({ _id }, { $set: queryBill }, { new: true });
         }

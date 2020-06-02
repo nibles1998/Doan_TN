@@ -117,8 +117,8 @@ tourCtrl.createData = async function (req, res, next) {
         req.body.child = 0;
         req.body.adult = 0;
 
-        startedDate = new Date(startedDate);
-        endDate = new Date(endDate);
+        startedDate = new Date(startedDate).toLocaleString({ timeZone: "VN" });
+        endDate = new Date(endDate).toLocaleString({ timeZone: "VN" });
         req.body.startedDate = startedDate;
         req.body.endDate = endDate;
 
@@ -186,8 +186,8 @@ tourCtrl.updateById = async function (req, res, next) {
         }
 
         if (endDate || startedDate) {
-            startedDate = new Date(startedDate);
-            endDate = new Date(endDate);
+            startedDate = new Date(startedDate).toLocaleString({ timeZone: "VN" });
+            endDate = new Date(endDate).toLocaleString({ timeZone: "VN" });
             req.body.startedDate = startedDate;
             req.body.endDate = endDate;
 
