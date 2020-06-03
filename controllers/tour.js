@@ -168,11 +168,13 @@ tourCtrl.updateById = async function (req, res, next) {
         }
 
         if (seat) {
-            if (seat !== (tour.child + tour.adult + tour.emptySeat)) {
+            if (seat <= (tour.child + tour.adult + tour.emptySeat)) {
                 return res.status(400).json({
                     success: false,
                     message: "Wrong number of seats!"
                 });
+            } else {
+                req.body.emptySeat = seat - (tour.child + tour.adult);
             }
         }
 
