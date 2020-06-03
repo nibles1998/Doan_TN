@@ -72,10 +72,7 @@ const attrs = {
     },
     description: {
         type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
+        allowNull: false
     },
     displayName: {
         type: Sequelize.STRING,
