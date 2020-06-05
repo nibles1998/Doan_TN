@@ -121,6 +121,7 @@ tourCtrl.createData = async function (req, res, next) {
         endDate = new Date(endDate).toLocaleString({ timeZone: "VN" });
         req.body.startedDate = startedDate;
         req.body.endDate = endDate;
+        req.body.photo = "";
 
         if (endDate < startedDate) {
             return res.status(400).json({
