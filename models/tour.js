@@ -110,6 +110,9 @@ const attrs = {
             isUUID: 4,
             notEmpty: true
         }
+    },
+    photo: {
+        type: Sequelize.STRING,
     }
 }
 

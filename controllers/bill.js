@@ -107,8 +107,8 @@ billCtrl.createData = async function (req, res, next) {
         }
 
         const queryTour = {
-            child: tour.child - child,
-            adult: tour.adult - adult,
+            child: tour.child + child,
+            adult: tour.adult + adult,
             emptySeat: tour.emptySeat - (child + adult)
         };
 
@@ -154,8 +154,7 @@ billCtrl.updateById = async function (req, res, next) {
                 message: "Bill is reject!"
             });
         }
-
-        if (req.body.hasCancel === true) {
+        if (req.body.hasCancel) {
             const queryTour = {
                 child: tour.child - bill.child,
                 adult: tour.adult - bill.adult,
@@ -178,36 +177,8 @@ billCtrl.updateById = async function (req, res, next) {
                 child: bill.child,
                 adult: bill.adult
             };
-
-            if (child !== null && child !== undefined) {
-                if (child !== bill.child) {
-                    queryTour.child = tour.child + child - bill.child;
-                    queryBill.child = child;
-                }
-            }
-
-            if (adult !== null && adult !== undefined) {
-                if (adult !== bill.adult) {
-                    queryTour.adult = tour.adult + adult - bill.child;
-                    queryBill.adult = adult;
-                }
-            }
-
-            if (price !== null && price !== undefined) {
-                queryBill.price = price;
-                const total = (queryBill.child * 0.8 * price) + (queryBill.adult * price);
-                queryBill.total = total;
-            } else {
-                const total = (queryBill.child * 0.8 * bill.price) + (queryBill.adult * bill.price);
-                queryBill.total = total;
-            }
-
-            queryTour.emptySeat = tour.emptySeat - ((queryTour.child + queryTour.adult) - (bill.child + bill.adult));
-
-            await tourModel.update(queryTour, { where: { id: tour.id } });
-
             if (!bill.hasPaied) {
-                if (req.body.hasPaied === true) {
+                if (req.body.hasPaied) {
                     queryBill.hasPaied = true;
                     const now = new Date().toLocaleString({ timeZone: "VN" });
 
@@ -219,6 +190,50 @@ billCtrl.updateById = async function (req, res, next) {
                         });
                     }
                     queryBill.paiedDate = now;
+                    await billModel.updateOne({ _id }, { $set: queryBill }, { new: true });
+                    return res.status(200).json({
+                        success: true,
+                        message: "Update Bill successfully!"
+                    });
+                }
+
+                if (child !== null && child !== undefined) {
+                    if (child !== bill.child) {
+                        queryTour.child = tour.child + child - bill.child;
+                        queryBill.child = child;
+                    }
+                }
+
+                if (adult !== null && adult !== undefined) {
+                    if (adult !== bill.adult) {
+                        queryTour.adult = tour.adult + adult - bill.child;
+                        queryBill.adult = adult;
+                    }
+                }
+
+                if (price !== null && price !== undefined) {
+                    queryBill.price = price;
+                    const total = (queryBill.child * 0.8 * price) + (queryBill.adult * price);
+                    queryBill.total = total;
+                } else {
+                    const total = (queryBill.child * 0.8 * bill.price) + (queryBill.adult * bill.price);
+                    queryBill.total = total;
+                }
+
+                queryTour.emptySeat = tour.emptySeat - ((queryTour.child + queryTour.adult) - (bill.child + bill.adult));
+
+                await tourModel.update(queryTour, { where: { id: tour.id } });
+
+            }
+
+            const applyDate = req.body.applyDate;
+            if (applyDate) {
+                const now = new Date().toLocaleDateString({ timeZone: "VN" });
+                if (applyDate < now) {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Apply Date is smaller than Now"
+                    });
                 }
             }
 
@@ -227,12 +242,12 @@ billCtrl.updateById = async function (req, res, next) {
             await billModel.updateOne({ _id }, { $set: queryBill }, { new: true });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Update Bill successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
