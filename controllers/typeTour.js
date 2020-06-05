@@ -14,15 +14,15 @@ typeTourCtrl.getMany = async function (req, res, next) {
                 continue;
             }
         }
-        
+
         const tour = await typeTourModel.findAll({ where: whereQuery });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: tour
         });
 
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -32,12 +32,12 @@ typeTourCtrl.getMany = async function (req, res, next) {
 typeTourCtrl.getById = async function (req, res, next) {
     try {
         const tour = await typeTourModel.findByPk(req.params.id);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: tour
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -55,12 +55,12 @@ typeTourCtrl.createData = async function (req, res, next) {
             });
         }
         await typeTourModel.create(req.body);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Create TypeTour successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -81,12 +81,12 @@ typeTourCtrl.updateById = async function (req, res, next) {
         await typeTourModel.update(req.body, {
             where: { id }
         });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Update TypeTour successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -97,12 +97,12 @@ typeTourCtrl.deleteById = async function (req, res, next) {
     try {
         const { id } = req.params;
         await typeTourModel.destroy({ where: { id } });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Delete TypeTour successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });

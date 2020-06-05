@@ -25,12 +25,12 @@ reviewCtrl.getMany = async function (req, res, next) {
         }
 
         const review = await reviewModel.find(whereQuery).sort(sortQuery);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: review
         })
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -40,12 +40,12 @@ reviewCtrl.getMany = async function (req, res, next) {
 reviewCtrl.getById = async function (req, res, next) {
     try {
         const review = await reviewModel.findById(req.params._id);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: review
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -55,12 +55,12 @@ reviewCtrl.getById = async function (req, res, next) {
 reviewCtrl.createData = async function (req, res, next) {
     try {
         await reviewModel.create(req.body);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Create Review successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -73,12 +73,12 @@ reviewCtrl.updateById = async function (req, res, next) {
         const now = new Date().toLocaleString({ timeZone: "VN" });
         req.body.updatedAt = now;
         await reviewModel.update({ _id }, { $set: req.body }, { new: true });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Update Review successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -89,12 +89,12 @@ reviewCtrl.deleteById = async function (req, res, next) {
     try {
         const { _id } = req.params;
         await reviewModel.deleteOne({ _id });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Delete Review successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });

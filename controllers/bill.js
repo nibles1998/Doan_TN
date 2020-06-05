@@ -55,12 +55,12 @@ billCtrl.getMany = async function (req, res, next) {
         }
 
         const bill = await billModel.find(whereQuery).sort(sortQuery);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: bill
         })
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -70,12 +70,12 @@ billCtrl.getMany = async function (req, res, next) {
 billCtrl.getById = async function (req, res, next) {
     try {
         const bill = await billModel.findById(req.params._id);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: bill
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -130,12 +130,12 @@ billCtrl.createData = async function (req, res, next) {
         req.body.hasCancel = false;
 
         await billModel.create(req.body);
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Create Bill successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
@@ -258,12 +258,12 @@ billCtrl.deleteById = async function (req, res, next) {
     try {
         const { _id } = req.params;
         await billModel.deleteOne({ _id });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Delete Bill successfully!"
         });
     } catch (error) {
-        res.status(400).json({
+        return res.status(400).json({
             success: false,
             message: error
         });
