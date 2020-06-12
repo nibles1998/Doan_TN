@@ -63,7 +63,6 @@ tourCtrl.getMany = async function (req, res, next) {
                 as: "typeTours"
             }
         });
-        tour.photo = path.resolve(`../uploads/${tour.photo}`);
         return res.status(200).json({
             success: true,
             data: tour
@@ -80,7 +79,6 @@ tourCtrl.getMany = async function (req, res, next) {
 tourCtrl.getById = async function (req, res, next) {
     try {
         const tour = await tourModel.findByPk(req.params.id);
-        tour.photo = path.resolve(`../uploads/${tour.photo}`);
         return res.status(200).json({
             success: true,
             data: tour
@@ -97,9 +95,9 @@ tourCtrl.createData = async function (req, res, next) {
     try {
         const { tourCode, seat, time } = req.body;
         let { startedDate, endDate } = req.body;
-        const tour = await tourModel.findOne({ where: { tourCode } });
+        const tourInfo = await tourModel.findOne({ where: { tourCode } });
 
-        if (tour) {
+        if (tourInfo) {
             return res.status(400).json({
                 success: false,
                 message: "TourCode is exist!"
@@ -121,10 +119,11 @@ tourCtrl.createData = async function (req, res, next) {
         req.body.child = 0;
         req.body.adult = 0;
 
-        startedDate = new Date(startedDate).toLocaleString({ timeZone: "VN" });
-        endDate = new Date(endDate).toLocaleString({ timeZone: "VN" });
-        req.body.startedDate = startedDate;
-        req.body.endDate = endDate;
+        startedDate = new Date(startedDate);
+        endDate = new Date(endDate);
+
+        req.body.startedDate = startedDate.toLocaleString({ timeZone: "VN" });
+        req.body.endDate = endDate.toLocaleString({ timeZone: "VN" });
 
         const processFile = req.file || {};
         let orgName = processFile.originalname || '';
@@ -136,19 +135,21 @@ tourCtrl.createData = async function (req, res, next) {
 
         req.body.photo = newFullPath.split("/")[1];
 
-        if (endDate < startedDate) {
+        if (endDate.getTime() < startedDate.getTime()) {
             return res.status(400).json({
                 success: false,
                 message: "endDate is smaller than startedDate!"
             });
         }
 
-        await tourModel.create(req.body);
+        const tour = await tourModel.create(req.body);
         return res.status(200).json({
             success: true,
+            data: tour,
             message: "Create Tour successfully!"
         });
     } catch (error) {
+        console.log("error: ", error);
         return res.status(400).json({
             success: false,
             message: error
@@ -161,7 +162,7 @@ tourCtrl.updateById = async function (req, res, next) {
         const { id } = req.params;
         const { tourCode, seat, child, adult, time } = req.body;
         let { startedDate, endDate } = req.body;
-        const tour = await tourModel.findByPk(id);
+        const tourInfo = await tourModel.findByPk(id);
         if (tourCode) {
             const code = await tourModel.findOne({ where: { tourCode } });
             if (code) {
@@ -182,18 +183,18 @@ tourCtrl.updateById = async function (req, res, next) {
         }
 
         if (seat) {
-            if (seat < (tour.child + tour.adult + tour.emptySeat)) {
+            if (seat < (tourInfo.child + tourInfo.adult + tourInfo.emptySeat)) {
                 return res.status(400).json({
                     success: false,
                     message: "Wrong number of seats!"
                 });
             } else {
-                req.body.emptySeat = seat - (tour.child + tour.adult);
+                req.body.emptySeat = seat - (tourInfo.child + tourInfo.adult);
             }
         }
 
         if (child && adult) {
-            if ((child + adult) > tour.emptySeat) {
+            if ((child + adult) > tourInfo.emptySeat) {
                 return res.status(400).json({
                     success: false,
                     message: "Not enough emptySeat!"
@@ -203,24 +204,27 @@ tourCtrl.updateById = async function (req, res, next) {
 
         const processFile = req.file || {};
         let orgName = processFile.originalname || '';
-        if (tour.photo !== orgName) {
-            orgName = orgName.trim().replace(/ /g, '-');
+        if (orgName !== '') {
+            if (tourInfo.photo !== orgName) {
+                orgName = orgName.trim().replace(/ /g, '-');
 
-            const fullPathInServer = processFile.path;
-            const newFullPath = `uploads/${orgName}`;
-            fs.renameSync(fullPathInServer, newFullPath);
+                const fullPathInServer = processFile.path;
+                const newFullPath = `uploads/${orgName}`;
+                fs.renameSync(fullPathInServer, newFullPath);
 
-            req.body.photo = newFullPath.split("/")[1];
+                req.body.photo = newFullPath.split("/")[1];
+            }
         }
 
         if (endDate || startedDate) {
-            startedDate = new Date(startedDate).toLocaleString({ timeZone: "VN" });
-            endDate = new Date(endDate).toLocaleString({ timeZone: "VN" });
-            req.body.startedDate = startedDate;
-            req.body.endDate = endDate;
+            startedDate = new Date(startedDate);
+            endDate = new Date(endDate);
+
+            req.body.startedDate = startedDate.toLocaleString({ timeZone: "VN" });;
+            req.body.endDate = endDate.toLocaleString({ timeZone: "VN" });;
 
             if (endDate) {
-                if (endDate <= tour.startedDate) {
+                if (endDate.getTime() <= (tourInfo.startedDate).getTime()) {
                     return res.status(400).json({
                         success: false,
                         message: "endDate input is smaller than startedDate!"
@@ -229,7 +233,7 @@ tourCtrl.updateById = async function (req, res, next) {
             }
 
             if (startedDate) {
-                if (tour.endDate <= startedDate) {
+                if ((tourInfo.endDate).getTime() <= startedDate.getTime()) {
                     return res.status(400).json({
                         success: false,
                         message: "endDate is smaller than startedDate input!"
@@ -239,11 +243,12 @@ tourCtrl.updateById = async function (req, res, next) {
 
         }
 
-        await tourModel.update(req.body, {
+        const tour = await tourModel.update(req.body, {
             where: { id }
         });
         return res.status(200).json({
             success: true,
+            data: tour,
             message: "Update Tour successfully!"
         });
     } catch (error) {
