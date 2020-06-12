@@ -2,6 +2,8 @@ const tourModel = require('../models').model.Tour;
 const TYPETOUR = require('../models/typeTour');
 const moment = require('moment');
 const Sequelize = require('sequelize');
+const fs = require('fs');
+const path = require('path');
 const tourCtrl = {};
 
 tourCtrl.getMany = async function (req, res, next) {
@@ -61,6 +63,7 @@ tourCtrl.getMany = async function (req, res, next) {
                 as: "typeTours"
             }
         });
+        tour.photo = path.resolve(`../uploads/${tour.photo}`);
         return res.status(200).json({
             success: true,
             data: tour
@@ -77,6 +80,7 @@ tourCtrl.getMany = async function (req, res, next) {
 tourCtrl.getById = async function (req, res, next) {
     try {
         const tour = await tourModel.findByPk(req.params.id);
+        tour.photo = path.resolve(`../uploads/${tour.photo}`);
         return res.status(200).json({
             success: true,
             data: tour
@@ -121,7 +125,16 @@ tourCtrl.createData = async function (req, res, next) {
         endDate = new Date(endDate).toLocaleString({ timeZone: "VN" });
         req.body.startedDate = startedDate;
         req.body.endDate = endDate;
-        req.body.photo = "";
+
+        const processFile = req.file || {};
+        let orgName = processFile.originalname || '';
+        orgName = orgName.trim().replace(/ /g, '-');
+
+        const fullPathInServer = processFile.path;
+        const newFullPath = `uploads/${orgName}`;
+        fs.renameSync(fullPathInServer, newFullPath);
+
+        req.body.photo = newFullPath.split("/")[1];
 
         if (endDate < startedDate) {
             return res.status(400).json({
@@ -169,7 +182,7 @@ tourCtrl.updateById = async function (req, res, next) {
         }
 
         if (seat) {
-            if (seat <= (tour.child + tour.adult + tour.emptySeat)) {
+            if (seat < (tour.child + tour.adult + tour.emptySeat)) {
                 return res.status(400).json({
                     success: false,
                     message: "Wrong number of seats!"
@@ -186,6 +199,18 @@ tourCtrl.updateById = async function (req, res, next) {
                     message: "Not enough emptySeat!"
                 });
             }
+        }
+
+        const processFile = req.file || {};
+        let orgName = processFile.originalname || '';
+        if (tour.photo !== orgName) {
+            orgName = orgName.trim().replace(/ /g, '-');
+
+            const fullPathInServer = processFile.path;
+            const newFullPath = `uploads/${orgName}`;
+            fs.renameSync(fullPathInServer, newFullPath);
+
+            req.body.photo = newFullPath.split("/")[1];
         }
 
         if (endDate || startedDate) {
