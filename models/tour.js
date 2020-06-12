@@ -66,7 +66,6 @@ const attrs = {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            isAlpha: true,
             notEmpty: true
         }
     },
