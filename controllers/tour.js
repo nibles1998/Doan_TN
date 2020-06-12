@@ -3,7 +3,6 @@ const TYPETOUR = require('../models/typeTour');
 const moment = require('moment');
 const Sequelize = require('sequelize');
 const fs = require('fs');
-const path = require('path');
 const tourCtrl = {};
 
 tourCtrl.getMany = async function (req, res, next) {
@@ -78,7 +77,12 @@ tourCtrl.getMany = async function (req, res, next) {
 
 tourCtrl.getById = async function (req, res, next) {
     try {
-        const tour = await tourModel.findByPk(req.params.id);
+        const tour = await tourModel.findByPk(req.params.id, {
+            include: {
+                model: TYPETOUR.model,
+                as: "typeTours"
+            }
+        });
         return res.status(200).json({
             success: true,
             data: tour
