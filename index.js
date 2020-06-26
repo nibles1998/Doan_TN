@@ -69,7 +69,6 @@ const startServer = async function () {
                 console.log("Role Admin is exist!");
             }
             const role = await UserRole.findAll({ where: { type: "Admin" } });
-            console.log("ROLE:", JSON.stringify(role, null, 2));
             const user = await User.findAll({ where: { email: 'ly@gmail.com' } });
             if (user.length === 0) {
                 console.log("Admin isn't exist!");
@@ -86,7 +85,6 @@ const startServer = async function () {
                     roleId: role[0].id,
                     paymentMethod: ["Momo"]
                 };
-                console.log("INFO:", JSON.stringify(info, null, 2));
                 await User.create(info)
                     .then(() => {
                         console.log("Admin is created!");
