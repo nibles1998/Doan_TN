@@ -20,9 +20,11 @@ tourCtrl.getMany = async function (req, res, next) {
                 const startDate = moment(date).format('YYYY-MM-DD');
                 const endDate = moment(date).endOf('month').format('YYYY-MM-DD');
                 whereQuery.startedDate = {
-                    [Sequelize.Op.gte]: startDate,
                     [Sequelize.Op.lte]: endDate
                 };
+                whereQuery.endDate = {
+                    [Sequelize.Op.gte]: startDate
+                }
                 continue;
             }
             if (_queryKey == "location") {
