@@ -1,6 +1,7 @@
 const userModel = require('../models').model.User;
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSaltSync(10);
+const userRoleModel = require('../models').model.UserRole;
 
 const userCtrl = {};
 
@@ -51,6 +52,7 @@ userCtrl.getById = async function (req, res, next) {
 userCtrl.createData = async function (req, res, next) {
     try {
         let { email, password, dateOfBirth } = req.body;
+        const role = await userRoleModel.findAll({ where: { type: "Customer" } });
 
         const user = await userModel.findOne({ where: { email } });
         if (user) {
@@ -66,6 +68,8 @@ userCtrl.createData = async function (req, res, next) {
             dateOfBirth = new Date(dateOfBirth).toLocaleString({ timeZone: "VN" });
             req.body.dateOfBirth = dateOfBirth;
         }
+
+        req.body.roleId = role.id;
 
         await userModel.create(req.body);
         return res.status(200).json({
