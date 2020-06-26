@@ -10,13 +10,19 @@ const connectDB = async function () {
         dialect: postgresConfig.DIALECT,
         logging: false
     });
-    await mongoose.connect(`mongodb://${mongoConfig.HOST}:${mongoConfig.PORT}/${mongoConfig.DBNAME}`, { useNewUrlParser: true, useUnifiedTopology: true });
-    await instanceDB.authenticate()
+    await mongoose.connect(`mongodb://${mongoConfig.HOST}:${mongoConfig.PORT}/${mongoConfig.DBNAME}`, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => {
-            console.log("Database already!");
+            console.log("Mongo Database already!");
         })
         .catch((e) => {
-            throw e
+            throw e;
+        });
+    await instanceDB.authenticate()
+        .then(() => {
+            console.log("Postgres Database already!");
+        })
+        .catch((e) => {
+            throw e;
         });
     return instanceDB;
 }
