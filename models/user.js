@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const Model = Sequelize.Model;
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSaltSync(10);
+const UserRole = require('../models/userRole').model;
 
 class User extends Model {
     constructor(...args) {
@@ -112,11 +113,12 @@ module.exports = {
         User.init(attrs, { ...options, sequelize: instanceDB });
         await User.sync()
             .then(async () => {
+                const role = await UserRole.findAll({ where: { type: "Admin" } });
                 const user = await User.findAll({ where: { email: 'ly@gmail.com' } });
                 if (user.length === 0) {
                     console.log("Admin isn't exist!");
                     const info = {
-                        fullName: "GiaLy",
+                        fullName: "Gia Ly",
                         address: "387A Lê Văn Khương, phường Hiệp Thành, quận 12 TP.HCM",
                         phone: "0373016238",
                         dateOfBirth: new Date("1998/08/04").toLocaleString({ timeZone: "VN" }),
@@ -125,7 +127,7 @@ module.exports = {
                         country: "VN",
                         description: "Ahihi Nib",
                         displayName: "MRLYKH",
-                        roleId: "5cecff1d-5433-4040-9043-7acf11e7222c",
+                        roleId: role.id,
                         paymentMethod: ["Momo"]
                     };
                     await User.create(info)
