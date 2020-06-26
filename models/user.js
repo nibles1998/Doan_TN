@@ -1,8 +1,5 @@
 const Sequelize = require('sequelize');
 const Model = Sequelize.Model;
-const bcrypt = require('bcrypt');
-const salt = bcrypt.genSaltSync(10);
-const UserRole = require('../models/userRole').model;
 
 class User extends Model {
     constructor(...args) {
@@ -111,36 +108,7 @@ const options = {}
 module.exports = {
     init: async (instanceDB) => {
         User.init(attrs, { ...options, sequelize: instanceDB });
-        await User.sync()
-            .then(async () => {
-                const role = await UserRole.findAll({ where: { type: "Admin" } });
-                const user = await User.findAll({ where: { email: 'ly@gmail.com' } });
-                if (user.length === 0) {
-                    console.log("Admin isn't exist!");
-                    const info = {
-                        fullName: "Gia Ly",
-                        address: "387A Lê Văn Khương, phường Hiệp Thành, quận 12 TP.HCM",
-                        phone: "0373016238",
-                        dateOfBirth: new Date("1998/08/04").toLocaleString({ timeZone: "VN" }),
-                        email: "ly@gmail.com",
-                        password: bcrypt.hashSync("123", salt),
-                        country: "VN",
-                        description: "Ahihi Nib",
-                        displayName: "MRLYKH",
-                        roleId: role.id,
-                        paymentMethod: ["Momo"]
-                    };
-                    await User.create(info)
-                        .then(() => {
-                            console.log("Admin is created!");
-                        })
-                        .catch((e) => {
-                            throw e;
-                        });
-                } else {
-                    console.log("Admin is exist!");
-                }
-            });
+        await User.sync();
     },
     model: User,
     type: "postgresql"
