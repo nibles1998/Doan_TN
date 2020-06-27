@@ -49,6 +49,7 @@ function verifyInput(obj, arr) {
     for (let i = 0; i < allKeyKeep.length; i++) {
         newObj[allKeyKeep[i]] = allValKeep[i];
     }
+    console.log("NEW:", JSON.stringify(newObj, null, 2));
 
     return newObj;
 };
@@ -56,10 +57,10 @@ function verifyInput(obj, arr) {
 function refactorBody(arr) {
     return function (req, res, next) {
         try {
-            verifyInput(req.body, arr);
+            req.body = verifyInput(req.body, arr);
             next();
         } catch (error) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: error.toString()
             });

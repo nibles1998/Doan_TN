@@ -52,6 +52,7 @@ userCtrl.getById = async function (req, res, next) {
 userCtrl.createData = async function (req, res, next) {
     try {
         let { email, password, dateOfBirth } = req.body;
+        console.log("BODY:", JSON.stringify(req.body, null, 2));
         const role = await userRoleModel.findAll({ where: { type: "Customer" } });
 
         const user = await userModel.findOne({ where: { email } });
