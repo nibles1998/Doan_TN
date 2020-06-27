@@ -31,7 +31,17 @@ const options = {}
 module.exports = {
     init: async (instanceDB) => {
         TypeTour.init(attrs, { ...options, sequelize: instanceDB });
-        await TypeTour.sync();
+        await TypeTour.sync()
+            .then(() => {
+                const typeDiscovery = await TypeTour.findAll({ where: { type: "Discovery" } });
+                if (typeDiscovery.length === 0) {
+                    await TypeTour.create({ type: "Discovery" });
+                }
+                const typeHoneyMoon = await TypeTour.findAll({ where: { type: "HoneyMoon" } });
+                if (typeHoneyMoon.length === 0) {
+                    await TypeTour.create({ type: "HoneyMoon" });
+                }
+            });
     },
     model: TypeTour,
     type: "postgresql"
