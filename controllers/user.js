@@ -69,7 +69,7 @@ userCtrl.createData = async function (req, res, next) {
             req.body.dateOfBirth = dateOfBirth;
         }
 
-        req.body.roleId = role.id;
+        req.body.roleId = role[0].id;
 
         await userModel.create(req.body);
         return res.status(200).json({
