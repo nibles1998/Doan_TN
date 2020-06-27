@@ -32,7 +32,7 @@ module.exports = {
     init: async (instanceDB) => {
         TypeTour.init(attrs, { ...options, sequelize: instanceDB });
         await TypeTour.sync()
-            .then(() => {
+            .then(async () => {
                 const typeDiscovery = await TypeTour.findAll({ where: { type: "Discovery" } });
                 if (typeDiscovery.length === 0) {
                     await TypeTour.create({ type: "Discovery" });
