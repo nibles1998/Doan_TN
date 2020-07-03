@@ -89,6 +89,16 @@ const attrs = {
             notEmpty: true
         }
     },
+    gender: {
+        type: Sequelize.BOOLEAN,
+    },
+    photo: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     paymentMethod: {
         type: Sequelize.STRING,
         allowNull: false,

@@ -80,7 +80,7 @@ const startServer = async function () {
                     email: "ly@gmail.com",
                     password: bcrypt.hashSync("123", salt),
                     country: "VN",
-                    description: "Ahihi Nib",
+                    description: "Là một lập trình viên chuyên về lập trình WebService!",
                     displayName: "MRLYKH",
                     roleId: role[0].id,
                     paymentMethod: ["Momo"]

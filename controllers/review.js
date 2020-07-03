@@ -67,7 +67,7 @@ reviewCtrl.updateById = async function (req, res, next) {
         const { _id } = req.params;
         const now = new Date().toLocaleString({ timeZone: "VN" });
         req.body.updatedAt = now;
-        await reviewModel.update({ _id }, { $set: req.body }, { new: true });
+        await reviewModel.updateOne({ _id }, { $set: req.body }, { new: true });
         return res.status(200).json({
             success: true,
             message: "Update Review successfully!"
