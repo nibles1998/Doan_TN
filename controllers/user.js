@@ -2,6 +2,7 @@ const userModel = require('../models').model.User;
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSaltSync(10);
 const userRoleModel = require('../models').model.UserRole;
+const fs = require('fs');
 
 const userCtrl = {};
 
@@ -71,6 +72,7 @@ userCtrl.createData = async function (req, res, next) {
         }
 
         req.body.roleId = role[0].id;
+        req.body.photo = '';
 
         await userModel.create(req.body);
         return res.status(200).json({
@@ -90,6 +92,7 @@ userCtrl.updateById = async function (req, res, next) {
         const { id } = req.params;
         const { password } = req.body;
         let { dateOfBirth } = req.body;
+        const userInfo = await userModel.findByPk(id);
 
         if (password) {
             const hash = bcrypt.hashSync(password, salt);
@@ -101,6 +104,20 @@ userCtrl.updateById = async function (req, res, next) {
             req.body.dateOfBirth = dateOfBirth;
         }
 
+        const processFile = req.file || {};
+        let orgName = processFile.originalname || '';
+        if (orgName !== '') {
+            if (userInfo.photo !== orgName) {
+                orgName = orgName.trim().replace(/ /g, '-');
+
+                const fullPathInServer = processFile.path;
+                const newFullPath = `uploads/${orgName}`;
+                fs.renameSync(fullPathInServer, newFullPath);
+
+                req.body.photo = newFullPath.split("/")[1];
+            }
+        }
+
         await userModel.update(req.body, {
             where: { id }
         });
@@ -109,6 +126,7 @@ userCtrl.updateById = async function (req, res, next) {
             message: "Update User successfully!"
         });
     } catch (error) {
+        console.log("ERROR:", error);
         return res.status(400).json({
             success: false,
             message: error

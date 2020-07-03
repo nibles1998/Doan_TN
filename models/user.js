@@ -95,9 +95,6 @@ const attrs = {
     photo: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: true
-        }
     },
     paymentMethod: {
         type: Sequelize.STRING,

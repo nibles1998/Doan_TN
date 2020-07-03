@@ -73,7 +73,7 @@ const startServer = async function () {
             if (user.length === 0) {
                 console.log("Admin isn't exist!");
                 const info = {
-                    fullName: "Gia Ly",
+                    fullName: "Gia Ly Nguyễn",
                     address: "387A Lê Văn Khương, phường Hiệp Thành, quận 12 TP.HCM",
                     phone: "0373016238",
                     dateOfBirth: new Date("1998/08/04").toLocaleString({ timeZone: "VN" }),
@@ -83,6 +83,8 @@ const startServer = async function () {
                     description: "Là một lập trình viên chuyên về lập trình WebService!",
                     displayName: "MRLYKH",
                     roleId: role[0].id,
+                    gender: true,
+                    photo: '',
                     paymentMethod: ["Momo"]
                 };
                 await User.create(info)
