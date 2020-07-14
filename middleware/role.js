@@ -8,7 +8,7 @@ role.checkRole = function (roleType, roleOption) {
         if (!userRole.type) {
             return res.status(403).json({
                 success: false,
-                message: "Bạn không có quyền truy cập chức năng này!"
+                message: "You do not have access!"
             });
         }
         
@@ -23,7 +23,7 @@ role.checkRole = function (roleType, roleOption) {
             if (!checkType) {
                 return res.status(400).json({
                     success: false,
-                    message: "Bạn không có quyền truy cập chức năng này!"
+                    message: "You do not have access!"
                 });
             }
         }
@@ -35,7 +35,7 @@ role.checkRole = function (roleType, roleOption) {
                     checkOption = false;
                     return res.status(400).json({
                         success: false,
-                        message: "Bạn không được cấp quyền sử dụng chức năng này!"
+                        message: "You have not granted access!"
                     });
                 }
             }

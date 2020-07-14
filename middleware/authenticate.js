@@ -16,7 +16,7 @@ JWT_Authenticate.getToken = async function (req, res, next) {
         if (!user) {
             return res.status(400).json({
                 success: false,
-                message: "Không tìm thấy User!"
+                message: "User not found!"
             });
         }
 
@@ -36,14 +36,14 @@ JWT_Authenticate.getToken = async function (req, res, next) {
         } else {
             return res.status(400).json({
                 success: false,
-                message: "Sai mật khẩu!"
+                message: "Wrong password!"
             });
         }
     } catch (error) {
         console.log(error);
         return res.status(400).json({
             success: false,
-            message: "Lỗi lấy Token!"
+            message: "Get token is error!"
         });
     }
 };
@@ -59,7 +59,7 @@ JWT_Authenticate.authenticateJWT = function (req, res, next) {
                     if (err) {
                         return res.status(403).json({
                             success: false,
-                            message: "Bạn không có quyền truy cập!"
+                            message: "You do not have access!"
                         });
                     }
 
@@ -72,14 +72,14 @@ JWT_Authenticate.authenticateJWT = function (req, res, next) {
             } else {
                 return res.status(403).json({
                     success: false,
-                    message: "Bạn không có quyền truy cập nhé!"
+                    message: "You have not granted access!"
                 });
             }
         } catch (error) {
             console.error(error);
             return res.status(400).json({
                 success: false,
-                message: "Lỗi quá trình xác thực!"
+                message: "Error authentication process!"
             });
         }
     })
