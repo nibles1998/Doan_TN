@@ -21,9 +21,10 @@ companyCtrl.getMany = async function (req, res, next) {
             data: company
         })
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get all Company!"
         });
     }
 };
@@ -36,9 +37,10 @@ companyCtrl.getById = async function (req, res, next) {
             data: company
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get Company by id!"
         });
     }
 };
@@ -59,9 +61,10 @@ companyCtrl.createData = async function (req, res, next) {
             message: "Create Company successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when create Company!"
         });
     }
 };
@@ -85,9 +88,10 @@ companyCtrl.updateById = async function (req, res, next) {
             message: "Update Company successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when update Company!"
         });
     }
 };
@@ -101,9 +105,10 @@ companyCtrl.deleteById = async function (req, res, next) {
             message: "Delete Company successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when delete Company!"
         });
     }
 };

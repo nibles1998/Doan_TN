@@ -60,9 +60,10 @@ billCtrl.getMany = async function (req, res, next) {
             data: bill
         })
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get all Bill!"
         });
     }
 };
@@ -75,9 +76,10 @@ billCtrl.getById = async function (req, res, next) {
             data: bill
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get Bill by id!"
         });
     }
 };
@@ -135,9 +137,10 @@ billCtrl.createData = async function (req, res, next) {
             message: "Create Bill successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when create Bill!"
         });
     }
 };
@@ -247,9 +250,10 @@ billCtrl.updateById = async function (req, res, next) {
             message: "Update Bill successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when update Bill!"
         });
     }
 };
@@ -263,9 +267,10 @@ billCtrl.deleteById = async function (req, res, next) {
             message: "Delete Bill successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when delete Bill!"
         });
     }
 };

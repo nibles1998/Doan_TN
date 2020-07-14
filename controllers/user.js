@@ -28,9 +28,10 @@ userCtrl.getMany = async function (req, res, next) {
             data: user
         })
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get all User!"
         });
     }
 };
@@ -43,9 +44,10 @@ userCtrl.getById = async function (req, res, next) {
             data: user
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get User by id!"
         });
     }
 };
@@ -80,9 +82,10 @@ userCtrl.createData = async function (req, res, next) {
             message: "Create User successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when create User!"
         });
     }
 };
@@ -129,7 +132,7 @@ userCtrl.updateById = async function (req, res, next) {
         console.log("ERROR:", error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when update User!"
         });
     }
 };
@@ -143,9 +146,10 @@ userCtrl.deleteById = async function (req, res, next) {
             message: "Delete User successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when delete User!"
         });
     }
 };

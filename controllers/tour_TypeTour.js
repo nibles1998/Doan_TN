@@ -23,9 +23,10 @@ tour_TypeTourCtrl.getMany = async function (req, res, next) {
         });
 
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get all Tour_TypeTour!"
         });
     }
 };
@@ -38,9 +39,10 @@ tour_TypeTourCtrl.getById = async function (req, res, next) {
             data: tour
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get Tour_TypeTour by id!"
         });
     }
 };
@@ -63,9 +65,10 @@ tour_TypeTourCtrl.createData = async function (req, res, next) {
             message: "Create Tour_TypeTour successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when create Tour_TypeTour!"
         });
     }
 };
@@ -89,9 +92,10 @@ tour_TypeTourCtrl.updateById = async function (req, res, next) {
             message: "Update Tour_TypeTour successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when update Tour_TypeTour!"
         });
     }
 };
@@ -105,9 +109,10 @@ tour_TypeTourCtrl.deleteById = async function (req, res, next) {
             message: "Delete Tour_TypeTour successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when delete Tour_TypeTour!"
         });
     }
 };

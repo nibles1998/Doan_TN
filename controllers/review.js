@@ -25,9 +25,10 @@ reviewCtrl.getMany = async function (req, res, next) {
             data: review
         })
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get all Review!"
         });
     }
 };
@@ -40,9 +41,10 @@ reviewCtrl.getById = async function (req, res, next) {
             data: review
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get Review by id!"
         });
     }
 };
@@ -55,9 +57,10 @@ reviewCtrl.createData = async function (req, res, next) {
             message: "Create Review successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when create Review!"
         });
     }
 };
@@ -73,9 +76,10 @@ reviewCtrl.updateById = async function (req, res, next) {
             message: "Update Review successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when update Review!"
         });
     }
 };
@@ -89,9 +93,10 @@ reviewCtrl.deleteById = async function (req, res, next) {
             message: "Delete Review successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when delete Review!"
         });
     }
 };

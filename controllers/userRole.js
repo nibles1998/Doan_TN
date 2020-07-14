@@ -21,9 +21,10 @@ userRoleCtrl.getMany = async function (req, res, next) {
             data: userRole
         })
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get all UserRole!"
         });
     }
 };
@@ -36,9 +37,10 @@ userRoleCtrl.getById = async function (req, res, next) {
             data: userRole
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get UserRole by id!"
         });
     }
 };
@@ -51,9 +53,10 @@ userRoleCtrl.createData = async function (req, res, next) {
             message: "Create UserRole successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when create UserRole!"
         });
     }
 };
@@ -69,9 +72,10 @@ userRoleCtrl.updateById = async function (req, res, next) {
             message: "Update UserRole successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when update UserRole!"
         });
     }
 };
@@ -85,9 +89,10 @@ userRoleCtrl.deleteById = async function (req, res, next) {
             message: "Delete UserRole successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when delete UserRole!"
         });
     }
 };

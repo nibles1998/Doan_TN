@@ -22,9 +22,10 @@ typeTourCtrl.getMany = async function (req, res, next) {
         });
 
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get all TypeTour!"
         });
     }
 };
@@ -37,9 +38,10 @@ typeTourCtrl.getById = async function (req, res, next) {
             data: tour
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when get TypeTour by id!"
         });
     }
 };
@@ -60,9 +62,10 @@ typeTourCtrl.createData = async function (req, res, next) {
             message: "Create TypeTour successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when create TypeTour!"
         });
     }
 };
@@ -86,9 +89,10 @@ typeTourCtrl.updateById = async function (req, res, next) {
             message: "Update TypeTour successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when update TypeTour!"
         });
     }
 };
@@ -102,9 +106,10 @@ typeTourCtrl.deleteById = async function (req, res, next) {
             message: "Delete TypeTour successfully!"
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
-            message: error
+            message: "Error when delete TypeTour!"
         });
     }
 };
